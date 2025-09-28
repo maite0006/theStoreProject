@@ -7,4 +7,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="IRepositorios\" />
+    <Folder Include="CustomExceptions\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\store.Utilidades\store.Utilidades.csproj" />
+  </ItemGroup>
+
+
+
 </Project>
