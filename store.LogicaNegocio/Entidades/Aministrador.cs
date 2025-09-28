@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 namespace store.LogicaNegocio.Entidades
 {
-    internal class Aministrador
+    public class Aministrador: Usuario
     {
+        public List<Producto> ProductosPublicados { get; set; } = new List<Producto>();
+        public Aministrador() { }
+       public Aministrador(string nombre, string email, string password)
+        {
+            Nombre = nombre;
+            Email = email;
+            Password = password;
+        }
     }
 }

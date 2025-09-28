@@ -6,7 +6,24 @@ using System.Threading.Tasks;
 
 namespace store.LogicaNegocio.Entidades
 {
-    internal class Cliente
+    public class Cliente: Usuario
     {
+        public string Pais { get; set; }
+        public string Telefono { get; set; }
+        public List<Compra> HistorialCompras { get; set; } = new List<Compra>();
+        public List<Producto> ProductosFavoritos { get; set; } = new List<Producto>();
+        public List<Reseña> Reseñas { get; set; } = new List<Reseña>();
+        public int PrecompraId { get; set; }
+        public Precompra Precompra { get; set; }
+
+        public Cliente() { }
+        public Cliente(string nombre, string email, string password, string pais, string telefono)
+        {
+            Nombre = nombre;
+            Email = email;
+            Password = password;
+            Pais = pais;
+            Telefono = telefono;
+        }
     }
 }
