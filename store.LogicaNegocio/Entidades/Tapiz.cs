@@ -6,7 +6,22 @@ using System.Threading.Tasks;
 
 namespace store.LogicaNegocio.Entidades
 {
-    class Tapiz
+    public class Tapiz : Producto
     {
+        public string TipoTela { get; set; }
+        public string Grosor { get; set; }
+
+        public Tapiz(){}
+        public Tapiz(string nombre, decimal precio, string descripcion, int stock, string medidas, string tipoTela, string grosor)
+        {
+            Nombre = nombre;
+            Precio = precio;
+            Descripcion = descripcion;
+            Stock = stock;
+            Medidas = medidas;
+            TipoTela = tipoTela;
+            Grosor = grosor;
+        }
+
     }
 }
