@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <Folder Include="IRepositorios\" />
-    <Folder Include="Entidades\" />
     <Folder Include="CustomExceptions\" />
   </ItemGroup>
 
