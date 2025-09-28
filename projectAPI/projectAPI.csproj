@@ -10,4 +10,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\store.LogicaAplicacion\store.LogicaAplicacion.csproj" />
+    <ProjectReference Include="..\store.LogicaNegocio\store.LogicaNegocio.csproj" />
+  </ItemGroup>
+
 </Project>
