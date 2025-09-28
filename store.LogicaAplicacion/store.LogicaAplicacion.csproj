@@ -7,4 +7,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\store.DTOs\store.DTOs.csproj" />
+    <ProjectReference Include="..\store.LogicaDatos\store.LogicaDatos.csproj" />
+    <ProjectReference Include="..\store.LogicaNegocio\store.LogicaNegocio.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="CasosDeUso\" />
+    <Folder Include="ICasosDeUso\" />
+  </ItemGroup>
+
 </Project>
