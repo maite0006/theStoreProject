@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <Folder Include="CasosDeUso\" />
-    <Folder Include="ICasosDeUso\" />
   </ItemGroup>
 
 </Project>

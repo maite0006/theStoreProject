@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace store.LogicaNegocio.Entidades
 {
-    public class Cliente: Usuario
+    public class Cliente : Usuario
     {
         public string Pais { get; set; }
         public string Telefono { get; set; }
@@ -25,5 +25,35 @@ namespace store.LogicaNegocio.Entidades
             Pais = pais;
             Telefono = telefono;
         }
-    }
+
+        public void AgregarProductoFavorito(Producto producto)
+        {
+            if (!ProductosFavoritos.Any(p => p.Id == producto.Id))
+            {
+                ProductosFavoritos.Add(producto);
+            }
+        }
+        public void EliminarProductoFavorito(int productoId)
+        {
+            var producto = ProductosFavoritos.FirstOrDefault(p => p.Id == productoId);
+            if (producto != null)
+            {
+                ProductosFavoritos.Remove(producto);
+            }
+        }
+
+        public void AgregarReseña(Reseña reseña)
+        {
+            Reseñas.Add(reseña);
+        }
+        public void AgregarCompra(Compra compra)
+        {
+            HistorialCompras.Add(compra);
+        }
+        public void VaciarPrecompra()
+        {
+            Precompra = new Precompra { ClienteId = this.Id };
+        }
+     }   
+       
 }

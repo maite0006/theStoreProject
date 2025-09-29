@@ -20,6 +20,6 @@ namespace store.LogicaNegocio.Entidades
              PrecioUnitario = precioUnitario;
              ProductoId = productId;
         }
-
+        
     }
 }
