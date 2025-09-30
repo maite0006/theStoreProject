@@ -14,7 +14,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CasosDeUso\" />
+    <Folder Include="CasosDeUso\CUCliente\" />
+    <Folder Include="CasosDeUso\CUAutenticacion\" />
+    <Folder Include="CasosDeUso\CUCompra\" />
+    <Folder Include="CasosDeUso\CUProductos\" />
+    <Folder Include="CasosDeUso\CUAdministrador\" />
+    <Folder Include="ICasosDeUso\ICUCompra\" />
+    <Folder Include="ICasosDeUso\ICUCliente\" />
+    <Folder Include="ICasosDeUso\ICUAdministrador\" />
+    <Folder Include="ICasosDeUso\ICUProductos\" />
+    <Folder Include="ICasosDeUso\ICUAtenticacion\" />
   </ItemGroup>
 
 </Project>

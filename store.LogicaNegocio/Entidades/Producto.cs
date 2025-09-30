@@ -19,5 +19,6 @@ namespace store.LogicaNegocio.Entidades
         public string Medidas { get; set; }
        
 
+
     }
 }

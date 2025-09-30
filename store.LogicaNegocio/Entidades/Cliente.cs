@@ -54,6 +54,10 @@ namespace store.LogicaNegocio.Entidades
         {
             Precompra = new Precompra { ClienteId = this.Id };
         }
-     }   
+        public override string GetRol()
+        {
+            return "Cliente";
+        }
+    }   
        
 }

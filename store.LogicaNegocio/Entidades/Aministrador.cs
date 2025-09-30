@@ -15,6 +15,27 @@ namespace store.LogicaNegocio.Entidades
             Nombre = nombre;
             Email = email;
             Password = password;
+       }
+        public override string GetRol()
+        {
+            return "Administrador";
         }
+        public void PublicarProducto(Producto producto)//Reevaluar metodo
+        {
+            ProductosPublicados.Add(producto);
+        }
+        public bool EliminarProducto(int productoId)
+        {
+            var producto = ProductosPublicados.FirstOrDefault(p => p.Id == productoId);
+            if (producto != null)
+            {
+                ProductosPublicados.Remove(producto);
+                return true;
+            }
+            return false;
+
+        }
+
+
     }
 }
