@@ -17,7 +17,9 @@ namespace store.LogicaNegocio.Entidades
         public bool Activo { get; set; }= true;
         public DateTime FechaPublicacion { get; set; } = DateTime.Now;
         public string Medidas { get; set; }
-       
+        public string Url { get; set; }
+        ICollection<Category> Categorias { get; set; }
+
 
 
     }
