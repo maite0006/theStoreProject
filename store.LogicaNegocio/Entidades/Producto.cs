@@ -10,6 +10,7 @@ namespace store.LogicaNegocio.Entidades
     {
 
         public int Id { get; set; }
+        public Guid Guid { get; set; } = Guid.NewGuid();
         public string Nombre { get; set; }
         public decimal Precio { get; set; }
         public string Descripcion { get; set; }
@@ -17,7 +18,7 @@ namespace store.LogicaNegocio.Entidades
         public bool Activo { get; set; }= true;
         public DateTime FechaPublicacion { get; set; } = DateTime.Now;
         public string Medidas { get; set; }
-        public string Url { get; set; }
+        public string IMGUrl { get; set; }
         ICollection<Category> Categorias { get; set; }
 
 

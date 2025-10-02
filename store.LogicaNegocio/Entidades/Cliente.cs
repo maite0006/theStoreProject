@@ -10,9 +10,9 @@ namespace store.LogicaNegocio.Entidades
     {
         public string Pais { get; set; }
         public string Telefono { get; set; }
-        public List<Compra> HistorialCompras { get; set; } = new List<Compra>();
-        public List<Producto> ProductosFavoritos { get; set; } = new List<Producto>();
-        public List<Reseña> Reseñas { get; set; } = new List<Reseña>();
+        public ICollection<Compra> HistorialCompras { get; set; } = new List<Compra>();
+        public ICollection<Producto> ProductosFavoritos { get; set; } = new List<Producto>();
+        public ICollection<Reseña> Reseñas { get; set; } = new List<Reseña>();
         public int PrecompraId { get; set; }
         public Precompra Precompra { get; set; }
 

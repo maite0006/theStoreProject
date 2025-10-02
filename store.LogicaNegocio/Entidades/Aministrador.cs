@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace store.LogicaNegocio.Entidades
 {
     public class Aministrador: Usuario
     {
-        public List<Producto> ProductosPublicados { get; set; } = new List<Producto>();
+        public ICollection<Producto> ProductosPublicados { get; set; } = new List<Producto>();
         public Aministrador() { }
        public Aministrador(string nombre, string email, string password)
         {

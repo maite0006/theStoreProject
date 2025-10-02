@@ -12,7 +12,7 @@ namespace store.LogicaNegocio.Entidades
         public decimal Total { get; set; }
         public int ClienteId { get; set; }
         public Cliente Cliente { get; set; }
-        public List<Articulo> Articulos { get; set; } = new List<Articulo>();
+        public ICollection<Articulo> Articulos { get; set; } = new List<Articulo>();
 
         public Precompra() { }
         public Precompra(int clienteId)

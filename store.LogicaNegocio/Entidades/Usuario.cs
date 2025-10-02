@@ -9,6 +9,7 @@ namespace store.LogicaNegocio.Entidades
     public abstract class Usuario
     {
         public int Id { get; set; }
+        public Guid Guid { get; set; } = Guid.NewGuid();
         public string Nombre { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }

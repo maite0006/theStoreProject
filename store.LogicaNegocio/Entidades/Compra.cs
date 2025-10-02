@@ -8,17 +8,20 @@ namespace store.LogicaNegocio.Entidades
 {
     public class Compra
     {
-        public int Id { get; set; }
+        public int Id { get; set; }//PK interna de la base de datos, autoincremental
+        public Guid Guid { get; set; } = Guid.NewGuid(); //ID pública para exponer las compras
+
         public decimal Total { get; set; }
         public string MetodoPago { get; set; }
-        public enum EstadoCompra
+        public Estado EstadoCompra { get; set; } = Estado.Pendiente;
+        public enum Estado
         {
             Pendiente,
             Procesando,
             Completada,
             Cancelada
         }
-        public List<Articulo> Articulos { get; set; } = new List<Articulo>();
+        public ICollection<Articulo> Articulos { get; set; } = new List<Articulo>();
         public DateTime Fecha { get; set; } = DateTime.Now;
         public int ClienteId { get; set; }
         public Cliente Cliente { get; set; }
