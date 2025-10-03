@@ -11,15 +11,15 @@ namespace store.LogicaNegocio.IRepositorios
     public interface IRepositorioProductos: IRepositorio<Producto, Guid>
     {
         //Async methods
-        ICollection<Producto> FindByCategoria(string categoria);
+       Task<ICollection<Producto>> FindByCategoria(string categoria);
 
-        ICollection<Producto> FindByPriceRange(decimal min, decimal max);
+        Task<ICollection<Producto>> FindByPriceRange(decimal min, decimal max);
 
-        ICollection<Producto> FindByNameOrDescription(string texto);
-        ICollection<Producto> FindByType(string tipo);
+        Task<ICollection<Producto>> FindByNameOrDescription(string texto);
+        Task<ICollection<Producto>> FindByType(string tipo);
 
-        Producto FindByGuid(Guid guid);
+        Task<Producto> FindByGuid(Guid guid);
 
-        ICollection<Producto> FindAvailable();
+        Task<ICollection<Producto>> FindAvailable();
     }
 }

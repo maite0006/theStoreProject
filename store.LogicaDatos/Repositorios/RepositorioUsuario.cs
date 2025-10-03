@@ -1,4 +1,5 @@
-﻿using store.LogicaNegocio.Entidades;
+﻿using Microsoft.EntityFrameworkCore;
+using store.LogicaNegocio.Entidades;
 using store.LogicaNegocio.IRepositorios;
 using System;
 using System.Collections.Generic;
@@ -10,39 +11,66 @@ namespace store.LogicaDatos.Repositorios
 {
     public class RepositorioUsuario : IRepositorioUsuarios
     {
-        public int AddAsync(Usuario nuevo)
+        private readonly eStoreDBContext _context;
+
+        public RepositorioUsuario(eStoreDBContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public async Task<int> AddAsync(Usuario nuevo)
+        {
+            await _context.Usuarios.AddAsync(nuevo);
+            await _context.SaveChangesAsync();
+            return nuevo.Id;
         }
 
-        public List<Usuario> FindAllAsync()
+        public async Task<List<Usuario>> FindAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Usuarios.ToListAsync();
         }
 
-        public Usuario FindByEmail(string email)
+        public async Task<Usuario> FindByEmail(string email)
         {
-            throw new NotImplementedException();
+            return await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
         }
 
-        public Usuario FindByIdAsync(Guid id)
+        public async Task<Usuario> FindByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _context.Usuarios.FirstOrDefaultAsync(u => u.Guid == id);
         }
 
-        public Usuario FindByNombre(string nombre)
+        public async Task<Usuario> FindByNombre(string nombre)
         {
-            throw new NotImplementedException();
+            return await _context.Usuarios.FirstOrDefaultAsync(u => u.Nombre.Contains(nombre));
         }
 
-        public void RemoveAsync(Guid id)
+        public async Task<bool> RemoveAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Guid == id);
+            if (usuario == null) return false;
+
+            _context.Usuarios.Remove(usuario);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public int UpdateAsync(Usuario obj)
+        public async Task<bool> UpdateAsync(Usuario obj)
         {
-            throw new NotImplementedException();
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Guid == obj.Guid);
+            if (usuario == null) return false;
+
+            usuario.Nombre = obj.Nombre;
+            usuario.Email = obj.Email;
+            usuario.Password = obj.Password;
+            if (usuario is Cliente cliente && obj is Cliente clienteActualizado)
+            {
+                cliente.Telefono = clienteActualizado.Telefono;
+                cliente.Pais = clienteActualizado.Pais;
+            }
+
+            _context.Usuarios.Update(usuario);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

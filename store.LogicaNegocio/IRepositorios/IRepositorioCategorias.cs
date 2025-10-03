@@ -11,7 +11,7 @@ namespace store.LogicaNegocio.IRepositorios
     public interface IRepositorioCategorias: IRepositorio<Category, int>
     {
         //Async methods
-        Category FindByName(string nombre);
-        ICollection<Category> FindByProducto(Guid productoGuid);
+        Task<Category> FindByName(string nombre);
+        Task<ICollection<Category>> FindByProducto(Guid productoGuid);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using store.LogicaNegocio.Entidades;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,12 +12,12 @@ namespace store.LogicaNegocio.IRepositorios
     public interface IRepositorioCompras: IRepositorio<Compra, Guid>
     {
         //Async methods
-        ICollection<Compra> FindByCliente(Guid clienteGuid);
+        Task<ICollection<Compra>> FindByCliente(Guid clienteGuid);
 
-        Compra FindByGuid(Guid compraGuid);
+        Task<Compra> FindByGuid(Guid compraGuid);
 
-        ICollection<Compra> FindPending();
+        Task<ICollection<Compra>> FindPending();
 
-        ICollection<Compra> FindByDateRange(DateTime inicio, DateTime fin);
+        Task<ICollection<Compra>> FindByDateRange(DateTime inicio, DateTime fin);
     }
 }

@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace store.LogicaNegocio.IRepositorios
 {
-    public interface IRepositorioPrecompras: IRepositorio<Precompra, int>
+    public interface IRepositorioPrecompras : IRepositorio<Precompra, int>
     {
         //Async methods
-        Precompra FindByCliente(Guid clienteGuid);
+        Task<Precompra> FindByCliente(Guid clienteGuid);
 
-        bool Clear(Guid clienteGuid);
+        Task AddArticulo(Articulo art);
 
-        int AddArticulo(Articulo art);
-
-        bool RemoveArticulo(int articuloId);
+        Task<bool> RemoveArticulo(int articuloId);
+        Task<ICollection<Articulo>> GetArticulos(Guid clienteGuid);
+    }
 }

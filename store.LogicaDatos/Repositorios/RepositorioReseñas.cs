@@ -1,4 +1,5 @@
-﻿using store.LogicaNegocio.Entidades;
+﻿using Microsoft.EntityFrameworkCore;
+using store.LogicaNegocio.Entidades;
 using store.LogicaNegocio.IRepositorios;
 using System;
 using System.Collections.Generic;
@@ -10,44 +11,77 @@ namespace store.LogicaDatos.Repositorios
 {
     public class RepositorioReseñas : IRepositorioReseñas
     {
-        public int AddAsync(Reseña nuevo)
+        private readonly eStoreDBContext _context;
+
+        public RepositorioReseñas(eStoreDBContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public async Task<int> AddAsync(Reseña nuevo)
+        {
+            await _context.Reseñas.AddAsync(nuevo);
+            await _context.SaveChangesAsync();
+            return nuevo.Id;
         }
 
-        public List<Reseña> FindAllAsync()
+        public async  Task<List<Reseña>> FindAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Reseñas
+            .Include(r => r.Cliente)
+            .Include(r => r.Producto)
+            .ToListAsync();
         }
 
-        public ICollection<Reseña> FindByCliente(Guid clienteGuid)
+        public async Task<ICollection<Reseña>> FindByCliente(Guid clienteGuid)
         {
-            throw new NotImplementedException();
+            return await _context.Reseñas
+            .Include(r => r.Producto)
+            .Where(r => r.Cliente.Guid == clienteGuid)
+            .ToListAsync();
         }
 
-        public Reseña FindByIdAsync(int id)
+        public async Task<Reseña> FindByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Reseñas
+            .Include(r => r.Cliente)
+            .Include(r => r.Producto)
+            .FirstOrDefaultAsync(r => r.Id == id);
         }
 
-        public ICollection<Reseña> FindByProducto(Guid productoGuid)
+        public async Task<ICollection<Reseña>> FindByProducto(Guid productoGuid)
         {
-            throw new NotImplementedException();
+            return await _context.Reseñas
+             .Include(r => r.Cliente)
+             .Where(r => r.Producto.Guid == productoGuid)
+             .ToListAsync();
         }
 
-        public ICollection<Reseña> FindByRating(int min, int max)
+        public async Task<ICollection<Reseña>> FindByRating(int min, int max)
         {
-            throw new NotImplementedException();
+            return await _context.Reseñas
+           .Include(r => r.Cliente)
+           .Include(r => r.Producto)
+           .Where(r => r.Puntuacion >= min && r.Puntuacion <= max)
+           .ToListAsync();
         }
 
-        public void RemoveAsync(int id)
+        public async Task<bool> RemoveAsync(int id)
         {
-            throw new NotImplementedException();
+            var reseña = await _context.Reseñas.FindAsync(id);
+            if (reseña == null)
+            {
+                return false;
+            }
+           
+            _context.Reseñas.Remove(reseña);
+            await _context.SaveChangesAsync();
+            return true;
+            
         }
 
-        public int UpdateAsync(Reseña obj)
+        public Task<bool> UpdateAsync(Reseña obj)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("Las reseñas no se pueden actualizar.");
         }
     }
 }

@@ -8,15 +8,15 @@ namespace store.LogicaNegocio.IRepositorios
 {
     public interface IRepositorio<T, TId> where T : class
     {
-        int AddAsync(T nuevo);
+        Task<int> AddAsync(T nuevo);
 
-        T FindByIdAsync(TId id);
+        Task<T> FindByIdAsync(TId id);
 
-        void RemoveAsync(TId id);
+        Task<bool> RemoveAsync(TId id);
 
-        List<T> FindAllAsync();
+        Task<List<T>> FindAllAsync();
 
-        int UpdateAsync(T obj);
+        Task<bool> UpdateAsync(T obj);
 
     }
 }

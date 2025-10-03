@@ -1,4 +1,5 @@
-﻿using store.LogicaNegocio.Entidades;
+﻿using Microsoft.EntityFrameworkCore;
+using store.LogicaNegocio.Entidades;
 using store.LogicaNegocio.IRepositorios;
 using System;
 using System.Collections.Generic;
@@ -10,49 +11,79 @@ namespace store.LogicaDatos.Repositorios
 {
     public class RepositorioCompras : IRepositorioCompras
     {
-        public int AddAsync(Compra nuevo)
+        private readonly eStoreDBContext _context;
+
+        public RepositorioCompras(eStoreDBContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public List<Compra> FindAllAsync()
+        public async Task<int> AddAsync(Compra nuevo)
         {
-            throw new NotImplementedException();
+            await _context.Compras.AddAsync(nuevo);
+            await _context.SaveChangesAsync();
+            return nuevo.Id;
         }
 
-        public ICollection<Compra> FindByCliente(Guid clienteGuid)
+        public async Task<List<Compra>> FindAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Compras
+            .Include(c => c.Articulos)
+            .Include(c => c.Cliente)
+            .ToListAsync();
         }
 
-        public ICollection<Compra> FindByDateRange(DateTime inicio, DateTime fin)
+        public async Task<ICollection<Compra>> FindByCliente(Guid clienteGuid)
         {
-            throw new NotImplementedException();
+            return await _context.Compras
+            .Include(c => c.Articulos)
+            .Where(c => c.Cliente.Guid == clienteGuid)
+            .ToListAsync();
         }
 
-        public Compra FindByGuid(Guid compraGuid)
+        public async Task<ICollection<Compra>> FindByDateRange(DateTime inicio, DateTime fin)
         {
-            throw new NotImplementedException();
+            return await _context.Compras
+            .Include(c => c.Articulos)
+            .Where(c => c.Fecha >= inicio && c.Fecha <= fin)
+            .ToListAsync();
         }
 
-        public Compra FindByIdAsync(Guid id)
+        public async Task<Compra> FindByGuid(Guid compraGuid)
         {
-            throw new NotImplementedException();
+            return await _context.Compras
+            .Include(c => c.Articulos)
+            .FirstOrDefaultAsync(c => c.Guid == compraGuid);
         }
 
-        public ICollection<Compra> FindPending()
+        public async Task<Compra> FindByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Compras
+            .Include(c => c.Articulos)
+            .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public void RemoveAsync(Guid id)
+        public async Task<ICollection<Compra>> FindByEstado(string estado)
         {
-            throw new NotImplementedException();
+            return await _context.Compras
+            .Include(c => c.Articulos)
+            .Where(c => c.EstadoCompra.ToString() == estado)
+            .ToListAsync();
         }
 
-        public int UpdateAsync(Compra obj)
+        public async Task<bool> RemoveAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var compra = await _context.Compras.FindAsync(id);
+            if (compra == null) return false;
+
+            _context.Compras.Remove(compra);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> UpdateAsync(Compra obj)
+        {
+            return false;
         }
     }
 }

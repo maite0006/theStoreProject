@@ -1,4 +1,5 @@
-﻿using store.LogicaNegocio.Entidades;
+﻿using Microsoft.EntityFrameworkCore;
+using store.LogicaNegocio.Entidades;
 using store.LogicaNegocio.IRepositorios;
 using System;
 using System.Collections.Generic;
@@ -10,59 +11,100 @@ namespace store.LogicaDatos.Repositorios
 {
     public class RepositorioProductos : IRepositorioProductos
     {
-        public int AddAsync(Producto nuevo)
+        private readonly eStoreDBContext _context;
+
+        public RepositorioProductos(eStoreDBContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public async Task<int> AddAsync(Producto nuevo)
+        {
+            
+            await _context.Productos.AddAsync(nuevo);
+            await _context.SaveChangesAsync()
+            return nuevo.Id;
         }
 
-        public List<Producto> FindAllAsync()
+        public async Task<List<Producto>> FindAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Productos
+            .Include(p => p.Categorias)
+            .ToListAsync();
         }
 
-        public ICollection<Producto> FindAvailable()
+        public async Task<ICollection<Producto>> FindAvailable()
         {
-            throw new NotImplementedException();
+            return await _context.Productos
+            .Where(p => p.Activo)
+            .ToListAsync();
         }
 
-        public ICollection<Producto> FindByCategoria(string categoria)
+        public async Task<ICollection<Producto>> FindByCategoria(string categoria)
         {
-            throw new NotImplementedException();
+            return await _context.Productos
+            .Where(p => p.Categorias.Any(c => c.Nombre == categoria))
+            .ToListAsync();
         }
 
-        public Producto FindByGuid(Guid guid)
+        public async Task<Producto> FindByGuid(Guid guid)
         {
-            throw new NotImplementedException();
+            return await _context.Productos
+             .Include(p => p.Categorias)
+             .FirstOrDefaultAsync(p => p.Guid == guid);
         }
 
-        public Producto FindByIdAsync(Guid id)
+        public async Task<Producto> FindByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _context.Productos
+            .Include(p => p.Categorias)
+            .FirstOrDefaultAsync(p => p.Guid == id);
         }
 
-        public ICollection<Producto> FindByNameOrDescription(string texto)
+        public async Task<ICollection<Producto>> FindByNameOrDescription(string texto)
         {
-            throw new NotImplementedException();
+            return await _context.Productos
+            .Where(p => p.Nombre.Contains(texto) || p.Descripcion.Contains(texto))
+            .ToListAsync();
         }
 
-        public ICollection<Producto> FindByPriceRange(decimal min, decimal max)
+        public async Task<ICollection<Producto>> FindByPriceRange(decimal min, decimal max)
         {
-            throw new NotImplementedException();
+            return await _context.Productos
+            .Where(p => p.Precio >= min && p.Precio <= max)
+            .ToListAsync();
         }
 
-        public ICollection<Producto> FindByType(string tipo)
+        public async Task<ICollection<Producto>> FindByType(string tipo)
         {
-            throw new NotImplementedException();
+            return await _context.Productos
+            .Where(p => p.GetType().Name == tipo)
+            .ToListAsync();
         }
 
-        public void RemoveAsync(Guid id)
+        public async Task<bool> RemoveAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var producto = await _context.Productos.FindAsync(id);
+            if (producto == null) return false;
+
+            _context.Productos.Remove(producto);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public int UpdateAsync(Producto obj)
+        public async Task<bool> UpdateAsync(Producto obj)
         {
-            throw new NotImplementedException();
+            var producto = await _context.Productos.FindAsync(obj.Guid);
+            if (producto == null) return false;
+
+            producto.Nombre = obj.Nombre;
+            producto.Descripcion = obj.Descripcion;
+            producto.Precio = obj.Precio;
+            producto.Stock = obj.Stock;
+            producto.Categorias = obj.Categorias;
+
+            _context.Productos.Update(producto);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

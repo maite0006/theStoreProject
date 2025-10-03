@@ -10,8 +10,8 @@ namespace store.LogicaNegocio.IRepositorios
     public interface IRepositorioUsuarios:IRepositorio<Usuario, Guid>
     {
         //Async methods
-        Usuario FindByEmail(string email);
-        Usuario FindByNombre (string nombre);
+        Task<Usuario> FindByEmail(string email);
+        Task<Usuario> FindByNombre (string nombre);
 
 
     }

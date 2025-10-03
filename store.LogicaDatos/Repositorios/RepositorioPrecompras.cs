@@ -1,4 +1,5 @@
-﻿using store.LogicaNegocio.Entidades;
+﻿using Microsoft.EntityFrameworkCore;
+using store.LogicaNegocio.Entidades;
 using store.LogicaNegocio.IRepositorios;
 using System;
 using System.Collections.Generic;
@@ -10,54 +11,88 @@ namespace store.LogicaDatos.Repositorios
 {
     public class RepositorioPrecompras : IRepositorioPrecompras
     {
-        public bool AddArticulo(Articulo art)
+        private readonly eStoreDBContext _context;
+
+        public RepositorioPrecompras(eStoreDBContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public int AddAsync(Precompra nuevo)
+        public async Task AddArticulo(Articulo art)
         {
-            throw new NotImplementedException();
+            var precompra = await _context.Precompras
+            .Include(pc => pc.Articulos)
+            .FirstOrDefaultAsync(pc => pc.Id == art.PrecompraId);
+
+            if (precompra != null)
+            {
+                precompra.Articulos.Add(art); 
+                await _context.Articulos.AddAsync(art); 
+                await _context.SaveChangesAsync();
+            }
         }
 
-        public bool Clear(Guid clienteGuid)
+        public async Task<int> AddAsync(Precompra nuevo)
         {
-            throw new NotImplementedException();
+            await _context.Precompras.AddAsync(nuevo);
+            await _context.SaveChangesAsync();
+            return nuevo.Id;
         }
 
-        public List<Precompra> FindAllAsync()
+        public async Task<List<Precompra>> FindAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Precompras
+            .Include(pc => pc.Articulos)
+            .ToListAsync();
         }
 
-        public Precompra FindByCliente(Guid clienteGuid)
+        public async Task<Precompra> FindByCliente(Guid clienteGuid)
         {
-            throw new NotImplementedException();
+            return await _context.Precompras
+            .Include(pc => pc.Articulos)
+            .FirstOrDefaultAsync(pc => pc.Cliente.Guid == clienteGuid);
         }
 
-        public Precompra FindByIdAsync(int id)
+        public async Task<Precompra> FindByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Precompras
+           .Include(pc => pc.Articulos)
+           .FirstOrDefaultAsync(pc => pc.Id == id);
+        }
+        public async Task<bool> RemoveArticulo(int articuloId)
+        {
+            var art = await _context.Articulos.FindAsync(articuloId);
+            if (art == null) return false;
+
+            _context.Articulos.Remove(art);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public bool RemoveArticulo(int articuloId)
+        public async Task<bool> RemoveAsync(int id)
         {
-            throw new NotImplementedException();
+            var art = await _context.Articulos.FindAsync(id);
+            if (art == null) return false;
+
+            _context.Articulos.Remove(art);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public void RemoveAsync(int id)
+        public async Task<bool> UpdateAsync(Precompra obj)
         {
-            throw new NotImplementedException();
+            return false;
+        }
+        public async Task<ICollection<Articulo>> GetArticulos(Guid clienteGuid)
+        {
+            var precompra = await _context.Precompras
+            .Include(pc => pc.Articulos)
+            .FirstOrDefaultAsync(pc => pc.Cliente.Guid == clienteGuid);
+
+            return precompra?.Articulos ?? new List<Articulo>();
+
         }
 
-        public int UpdateAsync(Precompra obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        int IRepositorioPrecompras.AddArticulo(Articulo art)
-        {
-            throw new NotImplementedException();
-        }
+      
     }
 }
