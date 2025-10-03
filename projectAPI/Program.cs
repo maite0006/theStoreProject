@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using store.LogicaDatos;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 //dbcontext conf
-builder.Services.AddDbContext<AppDbContext>(options =>
+builder.Services.AddDbContext<eStoreDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 

@@ -19,7 +19,8 @@ namespace store.LogicaNegocio.Entidades
         public DateTime FechaPublicacion { get; set; } = DateTime.Now;
         public string Medidas { get; set; }
         public string IMGUrl { get; set; }
-        ICollection<Category> Categorias { get; set; }
+        public ICollection<Category> Categorias { get; set; }= new List<Category>();
+        public ICollection<Reseña> Reseñas { get; set; } = new List<Reseña>();
 
 
 

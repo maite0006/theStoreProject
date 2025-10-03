@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,11 @@ namespace store.LogicaNegocio.Entidades
         public decimal PrecioUnitario { get; set; }
         public int ProductoId { get; set; }
         public Producto Producto { get; set; }
+
+        public int? CompraId { get; set; }
+        public Compra? Compra { get; set; }
+        public int? PrecompraId { get; set; }
+        public Precompra? Precompra { get; set; }
         public Articulo() { }
         public Articulo(int cantidad, decimal precioUnitario, int productId)
         {

@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\store.DTOs\store.DTOs.csproj" />
     <ProjectReference Include="..\store.LogicaAplicacion\store.LogicaAplicacion.csproj" />
+    <ProjectReference Include="..\store.LogicaDatos\store.LogicaDatos.csproj" />
   </ItemGroup>
 
 </Project>
