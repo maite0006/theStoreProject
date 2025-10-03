@@ -70,15 +70,14 @@ namespace store.LogicaDatos
                 .HasMany(c => c.Articulos)
                 .WithOne(a => a.Compra)
                 .HasForeignKey(a => a.CompraId)
-                .OnDelete(DeleteBehavior.Cascade);
-
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Configuración para las relaciones uno a muchos entre Precompra y Articulo
             modelBuilder.Entity<Precompra>()
                 .HasMany(p => p.Articulos)
                 .WithOne(a => a.Precompra)
                 .HasForeignKey(a => a.PrecompraId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             //Configuracion para campos unicos 
             modelBuilder.Entity<Usuario>().HasIndex(u => u.Email).IsUnique();
@@ -97,7 +96,22 @@ namespace store.LogicaDatos
             modelBuilder.Entity<Articulo>().HasKey(a => a.Id);
             modelBuilder.Entity<Category>().HasKey(c => c.Id);
 
+            //conf escalas en decimales
+            modelBuilder.Entity<Producto>()
+               .Property(p => p.Precio)
+               .HasColumnType("decimal(18,2)");
 
+            modelBuilder.Entity<Compra>()
+                .Property(c => c.Total)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Articulo>()
+                .Property(a => a.PrecioUnitario)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Precompra>()
+                .Property(pc => pc.Total)
+                .HasColumnType("decimal(18,2)");
 
         }
     }
