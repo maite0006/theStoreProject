@@ -18,11 +18,10 @@ namespace store.LogicaNegocio.Entidades
         public bool Activo { get; set; }= true;
         public DateTime FechaPublicacion { get; set; } = DateTime.Now;
         public string Medidas { get; set; }
-        public string IMGUrl { get; set; }
         public ICollection<Category> Categorias { get; set; }= new List<Category>();
         public ICollection<Reseña> Reseñas { get; set; } = new List<Reseña>();
 
-
+        public ICollection<ImgProd> Imagenes { get; set; } = new List<ImgProd>();
 
     }
 }

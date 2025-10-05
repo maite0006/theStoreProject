@@ -21,7 +21,7 @@ namespace store.LogicaDatos.Repositorios
         {
             
             await _context.Productos.AddAsync(nuevo);
-            await _context.SaveChangesAsync()
+            await _context.SaveChangesAsync();
             return nuevo.Id;
         }
 

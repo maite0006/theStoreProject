@@ -56,11 +56,11 @@ namespace store.LogicaDatos.Repositorios
             .FirstOrDefaultAsync(c => c.Guid == compraGuid);
         }
 
-        public async Task<Compra> FindByIdAsync(int id)
+        public async Task<Compra> FindByIdAsync(Guid id)
         {
             return await _context.Compras
             .Include(c => c.Articulos)
-            .FirstOrDefaultAsync(c => c.Id == id);
+            .FirstOrDefaultAsync(c => c.Guid == id);
         }
 
         public async Task<ICollection<Compra>> FindByEstado(string estado)
@@ -84,6 +84,14 @@ namespace store.LogicaDatos.Repositorios
         public async Task<bool> UpdateAsync(Compra obj)
         {
             return false;
+        }
+        public async Task<ICollection<Compra>> FindPending()
+        {
+            return await _context.Compras
+            .Include(c => c.Articulos)
+            .Include(c => c.Cliente)
+            .Where(c => c.EstadoCompra == Compra.Estado.Pendiente)
+            .ToListAsync();
         }
     }
 }

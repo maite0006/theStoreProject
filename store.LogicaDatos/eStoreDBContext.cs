@@ -20,6 +20,7 @@ namespace store.LogicaDatos
         public DbSet<Reseña> Reseñas { get; set; }
         public DbSet<Articulo> Articulos { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<ImgProd> ImgProds { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -78,6 +79,12 @@ namespace store.LogicaDatos
                 .WithOne(a => a.Precompra)
                 .HasForeignKey(a => a.PrecompraId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // Relación Producto ↔ ImgProd (1:N)
+            modelBuilder.Entity<ImgProd>()
+                .HasOne(i => i.Producto)
+                .WithMany(p => p.Imagenes)
+                .HasForeignKey(i => i.ProductoId);
 
             //Configuracion para campos unicos 
             modelBuilder.Entity<Usuario>().HasIndex(u => u.Email).IsUnique();

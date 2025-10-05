@@ -1,4 +1,5 @@
-﻿using store.LogicaNegocio.Entidades;
+﻿using Microsoft.EntityFrameworkCore;
+using store.LogicaNegocio.Entidades;
 using store.LogicaNegocio.IRepositorios;
 using System;
 using System.Collections.Generic;
@@ -21,38 +22,51 @@ namespace store.LogicaDatos.Repositorios
         {
             await _context.Categories.AddAsync(nuevo);
             await _context.SaveChangesAsync();
-            await _context.Categories.AddAsync(nuevo);
             return nuevo.Id; 
         }
 
-        public Task<List<Category>> FindAllAsync()
+        public async Task<List<Category>> FindAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Categories
+            .Include(c=> c.Productos) // Incluir los productos relacionados
+            .ToListAsync();
         }
 
-        public Task<Category> FindByIdAsync(int id)
+        public async Task<Category> FindByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Categories
+                .Include(c => c.Productos) // Incluir los productos relacionados
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public Task<Category> FindByName(string nombre)
+        public async Task<Category> FindByName(string nombre)
         {
-            throw new NotImplementedException();
+            return await _context.Categories
+                .Include(c => c.Productos) // Incluir los productos relacionados
+                .FirstOrDefaultAsync(c => c.Nombre == nombre);
         }
 
-        public Task<ICollection<Category>> FindByProducto(Guid productoGuid)
+        public async Task<ICollection<Category>> FindByProducto(Guid productoGuid)
         {
-            throw new NotImplementedException();
+           return await _context.Categories
+                .Where(c => c.Productos.Any(p => p.Guid == productoGuid))
+                .ToListAsync();
         }
 
-        public Task<bool> RemoveAsync(int id)
+        public async Task<bool> RemoveAsync(int id)
         {
-            throw new NotImplementedException();
+           return await _context.Categories
+                .Where(c => c.Id == id)
+                .ExecuteDeleteAsync() > 0;
         }
 
-        public Task<bool> UpdateAsync(Category obj)
+        public async Task<bool> UpdateAsync(Category obj)
         {
-            throw new NotImplementedException();
+            return await Task.Run(() =>
+            {
+                _context.Categories.Update(obj);
+                return _context.SaveChanges() > 0;
+            });
         }
     }
 }
