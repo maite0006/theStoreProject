@@ -21,9 +21,9 @@ namespace store.LogicaNegocio.Entidades
         {
             Nombre = nombre;
             Email = email;
-            Password = password;
             Pais = pais;
             Telefono = telefono;
+            setPassword(password);
         }
 
         public void AgregarProductoFavorito(Producto producto)

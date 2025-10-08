@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="CustomExceptions\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\store.Utilidades\store.Utilidades.csproj" />
   </ItemGroup>
 

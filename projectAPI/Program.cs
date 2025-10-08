@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using store.LogicaDatos;
+using store.LogicaDatos.Repositorios;
+using store.LogicaNegocio.IRepositorios;
+using store.Utilidades;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +13,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<eStoreDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+//Repositories injections
+builder.Services.AddScoped<IRepositorioUsuarios,RepositorioUsuario>();
+builder.Services.AddScoped<IRepositorioProductos,RepositorioProductos>();
+builder.Services.AddScoped<IRepositorioCategorias,RepositorioCategorias>();
+builder.Services.AddScoped<IRepositorioCompras,RepositorioCompras>();
+builder.Services.AddScoped<IRepositorioPrecompras, RepositorioPrecompras>();
+builder.Services.AddScoped<IRepositorioReseñas, RepositorioReseñas>();
+//Cripto injection
+builder.Services.AddScoped<ICrypto, Crypto>();
 
 
 builder.Services.AddControllers();
