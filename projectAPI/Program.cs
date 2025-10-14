@@ -20,8 +20,17 @@ builder.Services.AddScoped<IRepositorioCategorias,RepositorioCategorias>();
 builder.Services.AddScoped<IRepositorioCompras,RepositorioCompras>();
 builder.Services.AddScoped<IRepositorioPrecompras, RepositorioPrecompras>();
 builder.Services.AddScoped<IRepositorioReseñas, RepositorioReseñas>();
-//Cripto injection
-builder.Services.AddScoped<ICrypto, Crypto>();
+
+
+//JWT Service
+// Obtener la clave desde la configuración
+var claveSecreta = builder.Configuration["JwtSettings:ClaveSecreta"];
+
+// Registrar JwtTokenService como singleton
+builder.Services.AddSingleton(
+    new JwtTokenService(claveSecreta)
+);
+
 
 
 builder.Services.AddControllers();

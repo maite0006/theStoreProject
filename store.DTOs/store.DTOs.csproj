@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <Folder Include="DTOs\NewFolder\" />
-    <Folder Include="Mappers\" />
   </ItemGroup>
 
 </Project>
