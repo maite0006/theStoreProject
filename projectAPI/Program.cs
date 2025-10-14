@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using store.LogicaAplicacion.CU.CUUsuarios;
+using store.LogicaAplicacion.ICU.ICUUsuarios;
 using store.LogicaDatos;
 using store.LogicaDatos.Repositorios;
 using store.LogicaNegocio.IRepositorios;
@@ -21,6 +23,8 @@ builder.Services.AddScoped<IRepositorioCompras,RepositorioCompras>();
 builder.Services.AddScoped<IRepositorioPrecompras, RepositorioPrecompras>();
 builder.Services.AddScoped<IRepositorioReseñas, RepositorioReseñas>();
 
+//CU injections
+builder.Services.AddScoped<IAuthorizations, Authorizations>();
 
 //JWT Service
 // Obtener la clave desde la configuración

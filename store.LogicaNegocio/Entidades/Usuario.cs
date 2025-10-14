@@ -14,6 +14,7 @@ namespace store.LogicaNegocio.Entidades
         public string Email { get; set; }
         public string Password { get; set; }
         public DateTime FechaRegistro { get; set; } = DateTime.Now;
+        public string Rol { get; set; }="Cliente";
         public Usuario() { }
 
 

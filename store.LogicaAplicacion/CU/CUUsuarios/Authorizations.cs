@@ -9,33 +9,73 @@ using System.Text;
 using System.Threading.Tasks;
 using store.LogicaNegocio.CustomExceptions.UserExceptions;
 using store.LogicaNegocio.Entidades;
+using store.DTOs.DTOs.User.Authorization;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using store.DTOs.Mappers;
+using store.DTOs.DTOs.User;
 
 namespace store.LogicaAplicacion.CU.CUUsuarios
 {
     public class Authorizations : IAuthorizations
     {
-        private readonly IRepositorioUsuarios _repositorioUsuarios; 
-        
-        public Authorizations(IRepositorioUsuarios repositorioUsuarios,ICrypto crypto)          {
+        private readonly IRepositorioUsuarios _repositorioUsuarios;
+        private readonly JwtTokenService _JwtTokenService;
+        public Authorizations(IRepositorioUsuarios repositorioUsuarios, JwtTokenService jwt)          {
             _repositorioUsuarios = repositorioUsuarios;
-    
+            _JwtTokenService = jwt;
         }
 
-          public Task<string> LoginAsync(string username, string password)
+        public async Task<UserOutputDTO> LoginAsync(LoginDTO dto)
         {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> RegistrarAsync(string nombre, string email, string password, string pais, string telefono)
-        {
-            if (await _repositorioUsuarios.FindByEmail(email) != null)
+           Usuario buscado = await _repositorioUsuarios.FindByEmail(dto.Email);
+            if (buscado == null)
             {
-                throw new ExistingUser(email);
+                throw new NotExistingUser(dto.Email);
             }
-            var user= new Cliente(nombre, email, password, pais, telefono);
+            bool passwordMatch = Crypto.VerifyPasswordConBcrypt(buscado.Password, dto.password);
+            if (!passwordMatch)
+            {
+                throw new IncorrectPassword();
+            }
+            UserInputDTO dtoInToken = new UserInputDTO
+            {
+                Id = buscado.Id,
+                Email = buscado.Email,
+                Rol = buscado.Rol
+            };
+            UserOutputDTO token = _JwtTokenService.GenerarToken(dtoInToken);
+            return token;
+        }
 
-
-
+        public async Task<UserOutputDTO> RegistrarAsync(RegistroDTO dto)
+        {
+            if(dto.password!= dto.confirmPassword)
+            {
+                throw new PasswordsDontMatch();
+            }
+            Usuario buscado = await _repositorioUsuarios.FindByEmail(dto.Email);
+            if (buscado != null)
+            {
+                throw new ExistingUser(dto.Email);
+            }
+            var user= AuthsMapper.MapToCliente(dto);
+            user.Password = Crypto.HashPasswordConBcrypt(dto.password,12);
+            try
+            {
+               await _repositorioUsuarios.AddAsync(user);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al registrar el usuario: " + ex.Message);
+            }
+            UserInputDTO dtoInToken = new UserInputDTO
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Rol = user.Rol
+            };
+            UserOutputDTO token = _JwtTokenService.GenerarToken(dtoInToken);
+            return token;
         }
     }
 }

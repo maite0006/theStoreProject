@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using store.DTOs.DTOs.User;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using store.DTOs.DTOs.User;
+
 
 namespace store.Utilidades
 {
@@ -19,7 +20,7 @@ namespace store.Utilidades
             _claveSecreta = claveSecreta;
         }
 
-        public string GenerarToken(UserDTO usuario)
+        public UserOutputDTO GenerarToken(UserInputDTO usuario)
         {
             var claims = new List<Claim>
             {
@@ -37,8 +38,11 @@ namespace store.Utilidades
                 expires: DateTime.Now.AddHours(2),
                 signingCredentials: creds
             );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            UserOutputDTO dtoOut=new UserOutputDTO
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(token)
+            };
+            return dtoOut;
         }
 
     }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using store.DTOs.DTOs.User;
+using store.DTOs.DTOs.User.Authorization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +10,8 @@ namespace store.LogicaAplicacion.ICU.ICUUsuarios
 {
     public interface IAuthorizations
     {
-        Task<bool> RegistrarAsync(string nombre, string email, string password, string pais, string telefono);
-        Task<string> LoginAsync(string username, string password);
+        Task<UserOutputDTO> RegistrarAsync(RegistroDTO dto);
+        Task<UserOutputDTO> LoginAsync(LoginDTO dto);
 
     }
 }

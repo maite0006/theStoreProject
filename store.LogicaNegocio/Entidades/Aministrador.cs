@@ -16,7 +16,8 @@ namespace store.LogicaNegocio.Entidades
             Nombre = nombre;
             Email = email;
             Password = password;
-       }
+            Rol = "Administrador";
+        }
         public override string GetRol()
         {
             return "Administrador";
