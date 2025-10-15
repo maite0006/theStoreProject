@@ -2,6 +2,7 @@
 using store.DTOs.DTOs.User;
 using store.DTOs.DTOs.User.Authorization;
 using store.LogicaAplicacion.CU.CUUsuarios;
+using store.LogicaAplicacion.ICU.ICUUsuarios;
 using store.LogicaNegocio.CustomExceptions.UserExceptions;
 
 namespace projectAPI.Controllers
@@ -10,8 +11,8 @@ namespace projectAPI.Controllers
     [Route("api/[controller]")]
     public class AuthorizacionController : ControllerBase
     {
-        private readonly Authorizations _CUauthorizations;
-        public AuthorizacionController(Authorizations cUauthorizations)
+        private readonly IAuthorizations _CUauthorizations;
+        public AuthorizacionController(IAuthorizations cUauthorizations)
         {
             _CUauthorizations = cUauthorizations;
         }
