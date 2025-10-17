@@ -33,11 +33,11 @@ namespace store.LogicaDatos.Repositorios
             .ToListAsync();
         }
 
-        public async Task<ICollection<Compra>> FindByCliente(Guid clienteGuid)
+        public async Task<ICollection<Compra>> FindByCliente(int clienteid)
         {
             return await _context.Compras
             .Include(c => c.Articulos)
-            .Where(c => c.Cliente.Guid == clienteGuid)
+            .Where(c => c.Cliente.Id == clienteid)
             .ToListAsync();
         }
 
@@ -56,11 +56,11 @@ namespace store.LogicaDatos.Repositorios
             .FirstOrDefaultAsync(c => c.Guid == compraGuid);
         }
 
-        public async Task<Compra> FindByIdAsync(Guid id)
+        public async Task<Compra> FindByIdAsync(int id)
         {
             return await _context.Compras
             .Include(c => c.Articulos)
-            .FirstOrDefaultAsync(c => c.Guid == id);
+            .FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<ICollection<Compra>> FindByEstado(string estado)
@@ -71,9 +71,9 @@ namespace store.LogicaDatos.Repositorios
             .ToListAsync();
         }
 
-        public async Task<bool> RemoveAsync(Guid id)
+        public async Task<bool> RemoveAsync(int Id)
         {
-            var compra = await _context.Compras.FindAsync(id);
+            var compra = await _context.Compras.FindAsync(Id);
             if (compra == null) return false;
 
             _context.Compras.Remove(compra);
@@ -93,5 +93,7 @@ namespace store.LogicaDatos.Repositorios
             .Where(c => c.EstadoCompra == Compra.Estado.Pendiente)
             .ToListAsync();
         }
+
+
     }
 }

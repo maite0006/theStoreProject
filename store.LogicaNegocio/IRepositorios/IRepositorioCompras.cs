@@ -12,7 +12,7 @@ namespace store.LogicaNegocio.IRepositorios
     public interface IRepositorioCompras: IRepositorio<Compra, Guid>
     {
         //Async methods
-        Task<ICollection<Compra>> FindByCliente(Guid clienteGuid);
+        Task<ICollection<Compra>> FindByCliente(int clienteid);
 
         Task<Compra> FindByGuid(Guid compraGuid);
 

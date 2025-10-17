@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using store.DTOs.DTOs.User;
 using store.DTOs.DTOs.User.Authorization;
 using store.LogicaAplicacion.CU.CUUsuarios;
@@ -16,6 +17,7 @@ namespace projectAPI.Controllers
         {
             _CUauthorizations = cUauthorizations;
         }
+
         [HttpPost("login")]
 
         public async Task<IActionResult> Login([FromBody] LoginDTO dto)
@@ -66,10 +68,27 @@ namespace projectAPI.Controllers
             {
                 return Conflict(ex.Message);
             }
-            catch (Exception ex)
+            catch(errorRegistro ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception )
             {
                 return StatusCode(500, "Error interno del servidor");
             }
+        }
+
+        [Authorize]
+        [HttpGet("test-token")]
+        public IActionResult TestToken()
+        {
+            Console.WriteLine("Claims recibidos:");
+            foreach (var claim in User.Claims)
+            {
+                Console.WriteLine($"Type: {claim.Type}, Value: {claim.Value}");
+            }
+
+            return Ok("Token válido");
         }
     }
 }

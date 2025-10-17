@@ -32,11 +32,11 @@ namespace store.LogicaDatos.Repositorios
             .ToListAsync();
         }
 
-        public async Task<ICollection<Reseña>> FindByCliente(Guid clienteGuid)
+        public async Task<ICollection<Reseña>> FindByCliente(int clienteid)
         {
             return await _context.Reseñas
             .Include(r => r.Producto)
-            .Where(r => r.Cliente.Guid == clienteGuid)
+            .Where(r => r.Cliente.Id == clienteid)
             .ToListAsync();
         }
 
@@ -48,11 +48,11 @@ namespace store.LogicaDatos.Repositorios
             .FirstOrDefaultAsync(r => r.Id == id);
         }
 
-        public async Task<ICollection<Reseña>> FindByProducto(Guid productoGuid)
+        public async Task<ICollection<Reseña>> FindByProducto(int productoid)
         {
             return await _context.Reseñas
              .Include(r => r.Cliente)
-             .Where(r => r.Producto.Guid == productoGuid)
+             .Where(r => r.Producto.Id == productoid)
              .ToListAsync();
         }
 

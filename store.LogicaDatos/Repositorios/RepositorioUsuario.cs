@@ -34,9 +34,9 @@ namespace store.LogicaDatos.Repositorios
             return await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
         }
 
-        public async Task<Usuario> FindByIdAsync(Guid id)
+        public async Task<Usuario> FindByIdAsync(int id)
         {
-            return await _context.Usuarios.FirstOrDefaultAsync(u => u.Guid == id);
+            return await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task<Usuario> FindByNombre(string nombre)
@@ -44,9 +44,9 @@ namespace store.LogicaDatos.Repositorios
             return await _context.Usuarios.FirstOrDefaultAsync(u => u.Nombre.Contains(nombre));
         }
 
-        public async Task<bool> RemoveAsync(Guid id)
+        public async Task<bool> RemoveAsync(int id)
         {
-            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Guid == id);
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
             if (usuario == null) return false;
 
             _context.Usuarios.Remove(usuario);

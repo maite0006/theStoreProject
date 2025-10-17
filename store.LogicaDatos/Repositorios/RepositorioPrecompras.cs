@@ -46,11 +46,11 @@ namespace store.LogicaDatos.Repositorios
             .ToListAsync();
         }
 
-        public async Task<Precompra> FindByCliente(Guid clienteGuid)
+        public async Task<Precompra> FindByCliente(int clienteid)
         {
             return await _context.Precompras
             .Include(pc => pc.Articulos)
-            .FirstOrDefaultAsync(pc => pc.Cliente.Guid == clienteGuid);
+            .FirstOrDefaultAsync(pc => pc.Cliente.Id == clienteid);
         }
 
         public async Task<Precompra> FindByIdAsync(int id)
@@ -83,11 +83,11 @@ namespace store.LogicaDatos.Repositorios
         {
             return false;
         }
-        public async Task<ICollection<Articulo>> GetArticulos(Guid clienteGuid)
+        public async Task<ICollection<Articulo>> GetArticulos(int clienteid)
         {
             var precompra = await _context.Precompras
             .Include(pc => pc.Articulos)
-            .FirstOrDefaultAsync(pc => pc.Cliente.Guid == clienteGuid);
+            .FirstOrDefaultAsync(pc => pc.Cliente.Id == clienteid);
 
             return precompra?.Articulos ?? new List<Articulo>();
 

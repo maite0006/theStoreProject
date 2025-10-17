@@ -32,7 +32,7 @@ namespace store.LogicaAplicacion.CU.CUUsuarios
             {
                 throw new NotExistingUser(dto.Email);
             }
-            bool passwordMatch = Crypto.VerifyPasswordConBcrypt(buscado.Password, dto.password);
+            bool passwordMatch = Crypto.VerifyPasswordConBcrypt(dto.password, buscado.Password);
             if (!passwordMatch)
             {
                 throw new IncorrectPassword();
@@ -53,20 +53,27 @@ namespace store.LogicaAplicacion.CU.CUUsuarios
             {
                 throw new PasswordsDontMatch();
             }
+            Console.WriteLine("==> Passwords OK");
             Usuario buscado = await _repositorioUsuarios.FindByEmail(dto.Email);
             if (buscado != null)
             {
                 throw new ExistingUser(dto.Email);
             }
+            Console.WriteLine("==> Resultado FindByEmail: " + (buscado != null ? "ENCONTRADO" : "NO ENCONTRADO"));
             var user= AuthsMapper.MapToCliente(dto);
+            Console.WriteLine("==> Usuario mapeado: " + user.Email);
             user.Password = Crypto.HashPasswordConBcrypt(dto.password,12);
+            Console.WriteLine("==> Password hasheada");
             try
             {
                await _repositorioUsuarios.AddAsync(user);
+                Console.WriteLine("==> Usuario agregado");
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al registrar el usuario: " + ex.Message);
+                Console.WriteLine("==> Error en AddAsync: " + ex.Message);
+                throw new errorRegistro("Error al registrar el usuario: " + ex.Message);
+                
             }
             UserInputDTO dtoInToken = new UserInputDTO
             {
@@ -74,8 +81,11 @@ namespace store.LogicaAplicacion.CU.CUUsuarios
                 Email = user.Email,
                 Rol = user.Rol
             };
+            
             UserOutputDTO token = _JwtTokenService.GenerarToken(dtoInToken);
+            Console.WriteLine("==> Token generado OK");
             return token;
+
         }
     }
 }

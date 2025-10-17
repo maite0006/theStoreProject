@@ -53,11 +53,11 @@ namespace store.LogicaDatos.Repositorios
              .FirstOrDefaultAsync(p => p.Guid == guid);
         }
 
-        public async Task<Producto> FindByIdAsync(Guid id)
+        public async Task<Producto> FindByIdAsync(int id)
         {
             return await _context.Productos
             .Include(p => p.Categorias)
-            .FirstOrDefaultAsync(p => p.Guid == id);
+            .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<Producto>> FindByNameOrDescription(string texto)
@@ -81,7 +81,7 @@ namespace store.LogicaDatos.Repositorios
             .ToListAsync();
         }
 
-        public async Task<bool> RemoveAsync(Guid id)
+        public async Task<bool> RemoveAsync(int id)
         {
             var producto = await _context.Productos.FindAsync(id);
             if (producto == null) return false;

@@ -10,9 +10,9 @@ namespace store.LogicaNegocio.IRepositorios
     {
         Task<int> AddAsync(T nuevo);
 
-        Task<T> FindByIdAsync(TId id);
+        Task<T> FindByIdAsync(int id);
 
-        Task<bool> RemoveAsync(TId id);
+        Task<bool> RemoveAsync(int id);
 
         Task<List<T>> FindAllAsync();
 

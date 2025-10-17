@@ -46,10 +46,10 @@ namespace store.LogicaDatos.Repositorios
                 .FirstOrDefaultAsync(c => c.Nombre == nombre);
         }
 
-        public async Task<ICollection<Category>> FindByProducto(Guid productoGuid)
+        public async Task<ICollection<Category>> FindByProducto(int productoid)
         {
            return await _context.Categories
-                .Where(c => c.Productos.Any(p => p.Guid == productoGuid))
+                .Where(c => c.Productos.Any(p => p.Id == productoid))
                 .ToListAsync();
         }
 

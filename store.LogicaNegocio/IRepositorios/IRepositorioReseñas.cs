@@ -10,9 +10,9 @@ namespace store.LogicaNegocio.IRepositorios
     public interface IRepositorioReseñas: IRepositorio<Reseña, int>
     {
         //Async methods
-        Task<ICollection<Reseña>> FindByCliente(Guid clienteGuid);
+        Task<ICollection<Reseña>> FindByCliente(int clienteid);
 
-        Task<ICollection<Reseña>> FindByProducto(Guid productoGuid);
+        Task<ICollection<Reseña>> FindByProducto(int productoid);
 
         Task<ICollection<Reseña>> FindByRating(int min, int max);
     }

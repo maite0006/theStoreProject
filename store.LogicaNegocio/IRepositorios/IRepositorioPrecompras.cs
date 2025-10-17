@@ -10,11 +10,11 @@ namespace store.LogicaNegocio.IRepositorios
     public interface IRepositorioPrecompras : IRepositorio<Precompra, int>
     {
         //Async methods
-        Task<Precompra> FindByCliente(Guid clienteGuid);
+        Task<Precompra> FindByCliente(int clienteid);
 
         Task AddArticulo(Articulo art);
 
         Task<bool> RemoveArticulo(int articuloId);
-        Task<ICollection<Articulo>> GetArticulos(Guid clienteGuid);
+        Task<ICollection<Articulo>> GetArticulos(int clienteid);
     }
 }

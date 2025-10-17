@@ -12,6 +12,6 @@ namespace store.LogicaNegocio.IRepositorios
     {
         //Async methods
         Task<Category> FindByName(string nombre);
-        Task<ICollection<Category>> FindByProducto(Guid productoGuid);
+        Task<ICollection<Category>> FindByProducto(int productoid);
     }
 }
