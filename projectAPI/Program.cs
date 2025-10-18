@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using store.LogicaAplicacion.CU.CUCategory;
 using store.LogicaAplicacion.CU.CUProductos;
 using store.LogicaAplicacion.CU.CUUsuarios;
+using store.LogicaAplicacion.ICU.ICUCategory;
 using store.LogicaAplicacion.ICU.ICUProductos;
 using store.LogicaAplicacion.ICU.ICUUsuarios;
 using store.LogicaDatos;
@@ -35,6 +37,9 @@ builder.Services.AddScoped<ICUAltaProd, CUAltaProd>();
 builder.Services.AddScoped<ICUBajaProd,CUBajaProd>();
 builder.Services.AddScoped<ICUListarProds, CUListarProds>();
 builder.Services.AddScoped<ICUObtenerProd, CUObtenerProd>();
+builder.Services.AddScoped<ICUListarCategorias, CUListarCategorias>();
+builder.Services.AddScoped<ICUAltaCategoria, CUAltaCategoria>();
+builder.Services.AddScoped<ICUBajaCategoria, CUBajaCategoria>();
 
 //JWT Service
 // Obtener la clave desde la configuración
@@ -67,6 +72,7 @@ builder.Services.AddSingleton(
     new JwtTokenService(claveSecreta)
 );
 
+
 builder.Services.AddControllers();
 builder.Services.AddAuthorization();
 
@@ -83,6 +89,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<eStoreDBContext>();
+    context.Database.Migrate(); // Aplica migraciones pendientes
+    await DBSeeding.SeedAsync(context); // Ejecuta el seed
+}
 app.UseHttpsRedirection();
 app.UseAuthentication();
 

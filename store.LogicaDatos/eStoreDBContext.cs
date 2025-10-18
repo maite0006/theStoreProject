@@ -33,7 +33,7 @@ namespace store.LogicaDatos
             modelBuilder.Entity<Usuario>()
                 .HasDiscriminator<string>("UsuarioTipo")
                 .HasValue<Cliente>("Cliente")
-                .HasValue<Aministrador>("Administrador");
+                .HasValue<Administrador>("Administrador");
 
             // Configuración para las relaciones muchos a muchos entre Producto y Category
             modelBuilder.Entity<Producto>()

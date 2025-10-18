@@ -49,25 +49,20 @@ namespace store.LogicaAplicacion.CU.CUUsuarios
 
         public async Task<UserOutputDTO> RegistrarAsync(RegistroDTO dto)
         {
-            if(dto.password!= dto.confirmPassword)
+            if (dto.password != dto.confirmPassword)
             {
                 throw new PasswordsDontMatch();
             }
-            Console.WriteLine("==> Passwords OK");
             Usuario buscado = await _repositorioUsuarios.FindByEmail(dto.Email);
             if (buscado != null)
             {
                 throw new ExistingUser(dto.Email);
             }
-            Console.WriteLine("==> Resultado FindByEmail: " + (buscado != null ? "ENCONTRADO" : "NO ENCONTRADO"));
             var user= AuthsMapper.MapToCliente(dto);
-            Console.WriteLine("==> Usuario mapeado: " + user.Email);
             user.Password = Crypto.HashPasswordConBcrypt(dto.password,12);
-            Console.WriteLine("==> Password hasheada");
             try
             {
-               await _repositorioUsuarios.AddAsync(user);
-                Console.WriteLine("==> Usuario agregado");
+                await _repositorioUsuarios.AddAsync(user);
             }
             catch (Exception ex)
             {

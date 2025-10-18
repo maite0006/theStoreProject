@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace store.LogicaNegocio.Entidades
 {
-    public class Aministrador: Usuario
+    public class Administrador: Usuario
     {
         public ICollection<Producto> ProductosPublicados { get; set; } = new List<Producto>();
-        public Aministrador() { }
-       public Aministrador(string nombre, string email, string password)
+        public Administrador() { }
+       public Administrador(string nombre, string email, string password)
         {
             Nombre = nombre;
             Email = email;
