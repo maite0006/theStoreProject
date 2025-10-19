@@ -44,6 +44,7 @@ namespace projectAPI.Controllers
             }
         }
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> EliminarCategoria(int id)
         {
             try
@@ -64,6 +65,7 @@ namespace projectAPI.Controllers
             }
         }
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> AltaCategoria(CatDTO dto)
         {
             if (!ModelState.IsValid)

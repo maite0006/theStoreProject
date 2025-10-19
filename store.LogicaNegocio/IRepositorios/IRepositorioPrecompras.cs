@@ -9,6 +9,8 @@ namespace store.LogicaNegocio.IRepositorios
 {
     public interface IRepositorioPrecompras : IRepositorio<Precompra, int>
     {
+        public Task<bool> ExisteArticuloEnPrecompra(int productoId, int precompraId);
+       
         //Async methods
         Task<Precompra> FindByCliente(int clienteid);
 

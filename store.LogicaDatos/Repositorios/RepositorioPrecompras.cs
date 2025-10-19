@@ -18,6 +18,10 @@ namespace store.LogicaDatos.Repositorios
             _context = context;
         }
 
+        public async Task<bool> ExisteArticuloEnPrecompra(int productoId, int precompraId)
+        {
+            return await _context.Articulos.AnyAsync(a => a.ProductoId == productoId && a.PrecompraId == precompraId);
+        }
         public async Task AddArticulo(Articulo art)
         {
             var precompra = await _context.Precompras
@@ -50,6 +54,7 @@ namespace store.LogicaDatos.Repositorios
         {
             return await _context.Precompras
             .Include(pc => pc.Articulos)
+            .ThenInclude(a => a.Producto)
             .FirstOrDefaultAsync(pc => pc.Cliente.Id == clienteid);
         }
 
@@ -87,6 +92,7 @@ namespace store.LogicaDatos.Repositorios
         {
             var precompra = await _context.Precompras
             .Include(pc => pc.Articulos)
+            .ThenInclude(a => a.Producto)
             .FirstOrDefaultAsync(pc => pc.Cliente.Id == clienteid);
 
             return precompra?.Articulos ?? new List<Articulo>();

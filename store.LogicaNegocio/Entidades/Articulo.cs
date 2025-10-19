@@ -20,12 +20,25 @@ namespace store.LogicaNegocio.Entidades
         public int? PrecompraId { get; set; }
         public Precompra? Precompra { get; set; }
         public Articulo() { }
-        public Articulo(int cantidad, decimal precioUnitario, int productId)
-        {
-             Cantidad = cantidad;
-             PrecioUnitario = precioUnitario;
-             ProductoId = productId;
-        }
         
+
+        
+        public Articulo(int productoId, int cantidad, decimal precioUnitario, int precompraId)
+        {
+            ProductoId = productoId;
+            Cantidad = cantidad;
+            PrecioUnitario = precioUnitario;
+            PrecompraId = precompraId;
+        }
+
+        public Articulo(int productoId, int cantidad, decimal precioUnitario, int compraId, bool esCompra)
+        {
+            ProductoId = productoId;
+            Cantidad = cantidad;
+            PrecioUnitario = precioUnitario;
+            CompraId = compraId;
+        }
+
+
     }
 }

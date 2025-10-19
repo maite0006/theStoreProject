@@ -27,13 +27,25 @@ namespace store.LogicaDatos
             // Configuración para la herencia TPH (Table Per Hierarchy)
             modelBuilder.Entity<Producto>()
                 .HasDiscriminator<string>("ProductoTipo")
-                .HasValue<Tapiz>("Tapiz")
-                .HasValue<Cuadro>("Cuadro")
-                .HasValue<Poster>("Poster");
+                .HasValue<Tapiz>("tapiz")
+                .HasValue<Cuadro>("cuadro")
+                .HasValue<Poster>("poster");
             modelBuilder.Entity<Usuario>()
-                .HasDiscriminator<string>("UsuarioTipo")
+                .HasDiscriminator<string>("Rol")
                 .HasValue<Cliente>("Cliente")
                 .HasValue<Administrador>("Administrador");
+
+            modelBuilder.Entity<Administrador>()
+                .HasMany(a => a.ProductosPublicados)
+                .WithMany() // no especificamos navegación inversa
+                .UsingEntity<Dictionary<string, object>>(
+                    "AdministradorProductoPublicados");
+            modelBuilder.Entity<Cliente>()
+                .HasMany(c => c.ProductosFavoritos)
+                .WithMany() // sin navegación inversa
+                .UsingEntity<Dictionary<string, object>>(
+                    "ClienteProductosFavoritos");
+
 
             // Configuración para las relaciones muchos a muchos entre Producto y Category
             modelBuilder.Entity<Producto>()
@@ -41,6 +53,7 @@ namespace store.LogicaDatos
                 .WithMany(c => c.Productos)
                 .UsingEntity<Dictionary<string, object>>(
                     "ProductoCategory");
+
             // Configuración para las relaciones uno a muchos entre Cliente y Compra
             modelBuilder.Entity<Cliente>()
                 .HasMany(c => c.HistorialCompras)

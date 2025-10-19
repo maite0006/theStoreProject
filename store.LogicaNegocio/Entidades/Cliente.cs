@@ -24,6 +24,7 @@ namespace store.LogicaNegocio.Entidades
             Pais = pais;
             Telefono = telefono;
             setPassword(password);
+            Precompra = new Precompra();
         }
 
         public void AgregarProductoFavorito(Producto producto)

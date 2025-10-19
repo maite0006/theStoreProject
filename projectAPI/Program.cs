@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using store.LogicaAplicacion.CU.CUArticulos;
 using store.LogicaAplicacion.CU.CUCategory;
 using store.LogicaAplicacion.CU.CUProductos;
 using store.LogicaAplicacion.CU.CUUsuarios;
+using store.LogicaAplicacion.ICU.ICUArticulos;
 using store.LogicaAplicacion.ICU.ICUCategory;
 using store.LogicaAplicacion.ICU.ICUProductos;
 using store.LogicaAplicacion.ICU.ICUUsuarios;
@@ -20,8 +23,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 //dbcontext conf
 builder.Services.AddDbContext<eStoreDBContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-);
+   { options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+       options.LogTo(Console.WriteLine, LogLevel.Information);
+
+   });
 //Repositories injections
 builder.Services.AddScoped<IRepositorioUsuarios,RepositorioUsuario>();
 builder.Services.AddScoped<IRepositorioProductos,RepositorioProductos>();
@@ -40,6 +45,10 @@ builder.Services.AddScoped<ICUObtenerProd, CUObtenerProd>();
 builder.Services.AddScoped<ICUListarCategorias, CUListarCategorias>();
 builder.Services.AddScoped<ICUAltaCategoria, CUAltaCategoria>();
 builder.Services.AddScoped<ICUBajaCategoria, CUBajaCategoria>();
+builder.Services.AddScoped<ICUEditarCantArt, CUEditarCantArticulo>();
+builder.Services.AddScoped<ICUAltaArticulo, CUAltaArticulo>();
+builder.Services.AddScoped<ICUEliminarArticulo, CUEliminarArticulo>();
+
 
 //JWT Service
 // Obtener la clave desde la configuración
@@ -89,12 +98,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<eStoreDBContext>();
-    context.Database.Migrate(); // Aplica migraciones pendientes
-    await DBSeeding.SeedAsync(context); // Ejecuta el seed
-}
+
 app.UseHttpsRedirection();
 app.UseAuthentication();
 
