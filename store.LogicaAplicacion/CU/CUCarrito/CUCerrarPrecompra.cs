@@ -1,4 +1,7 @@
-﻿using store.LogicaAplicacion.ICU.ICUCarrito;
+﻿using store.DTOs.DTOs.Compra;
+using store.LogicaAplicacion.ICU.ICUCarrito;
+using store.LogicaAplicacion.ICU.ICUCompra;
+using store.LogicaAplicacion.Mappers;
 using store.LogicaDatos.Repositorios;
 using store.LogicaNegocio.CustomExceptions;
 using store.LogicaNegocio.CustomExceptions.PrecompraException;
@@ -15,21 +18,23 @@ namespace store.LogicaAplicacion.CU.CUCarrito
     public class CUCerrarPrecompra : ICUCerrarPrecompra
     {
         private readonly IRepositorioPrecompras _repositorioPrecompras;
+        private readonly IRepositorioCompras _repositorioCompras;
         private readonly ICUCalcularTotal _cuCalcularTotalCarrito;
-        public  CUCerrarPrecompra(IRepositorioPrecompras repositorio, ICUCalcularTotal cUCalcularTotal)
+        
+        public  CUCerrarPrecompra(IRepositorioPrecompras repositorio, ICUCalcularTotal cUCalcularTotal, IRepositorioCompras repositorioCompras)
         {
             _repositorioPrecompras = repositorio;
             _cuCalcularTotalCarrito = cUCalcularTotal;
+            _repositorioCompras=repositorioCompras;
+            
         }
-        //Terminar metodo
-        public async Task<bool> CerrarPrecompra(int precompraId)
+        public async Task<CompraDTO> CerrarPrecompra(int precompraId)
         {
-            // 1. Recuperar la precompra del usuario con los artículos y productos
+            
             Precompra precompra = await _repositorioPrecompras.FindByIdAsync(precompraId);
             if (precompra == null || precompra.Articulos.Count == 0)
                 throw new EntityNotFound("Precompra", precompraId);
 
-            // 2. Separar artículos válidos de los inválidos
             var articulosValidos = precompra.Articulos
                 .Where(a => a.Producto.Activo && a.Cantidad <= a.Producto.Stock)
                 .ToList();
@@ -37,26 +42,20 @@ namespace store.LogicaAplicacion.CU.CUCarrito
             if (!articulosValidos.Any())
                 throw new SinArticulosDisponibles("No hay artículos disponibles para la compra.");
 
-            
-            var articulosInvalidos = precompra.Articulos.Except(articulosValidos).ToList();
-
             var compra = new Compra
             {
                 ClienteId = precompra.ClienteId,
                 Articulos = articulosValidos,
-                Total = articulosValidos.Sum(a => a.Cantidad * a.PrecioUnitario),
+                Total = await _cuCalcularTotalCarrito.CalcularTotalCarrito(precompraId),
                 Fecha = DateTime.Now,
            
             };
 
-            // Llamar al CU de realizar compra para persistir la compra y actualizar stock
-            int compraId = await _cuRealizarCompra.RealizarCompra(compra);
-
-            
+            await _repositorioCompras.AddAsync(compra);
             precompra.Articulos.Clear();
             await _repositorioPrecompras.UpdateAsync(precompra);
 
-            return true;
+            return CompraMapper.fromCompra(compra);
         }
     }
 }

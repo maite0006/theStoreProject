@@ -36,7 +36,13 @@ namespace store.LogicaAplicacion.CU.CUCarrito
 
             foreach (var art in precompra.Articulos)
             {
-                var disponible = art.Producto.Activo && art.Cantidad <= art.Producto.Stock;
+                string estado;
+                if (!art.Producto.Activo)
+                    estado = "Desactivado";
+                else if (art.Cantidad > art.Producto.Stock)
+                    estado = "SinStock";
+                else
+                    estado = "Disponible";
 
                 carritoDto.Articulos.Add(new ArticuloCarritoDTO
                 {
@@ -45,7 +51,7 @@ namespace store.LogicaAplicacion.CU.CUCarrito
                     NombreProducto = art.Producto.Nombre,
                     Cantidad = art.Cantidad,
                     PrecioUnitario = art.PrecioUnitario,
-                    Disponible = disponible
+                    Disponible = estado
                 });
             }
 

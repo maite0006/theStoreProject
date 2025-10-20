@@ -21,6 +21,8 @@ namespace store.LogicaDatos
         public DbSet<Articulo> Articulos { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<ImgProd> ImgProds { get; set; }
+        public DbSet<Pago> Pagos { get; set; }
+        public DbSet<Envio> Envios{ get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -53,6 +55,11 @@ namespace store.LogicaDatos
                 .WithMany(c => c.Productos)
                 .UsingEntity<Dictionary<string, object>>(
                     "ProductoCategory");
+
+             modelBuilder.Entity<Pago>()
+                .HasOne(p => p.Compra)
+                .WithOne(c => c.Pago)  // suponiendo que Compra tiene Pago
+                .HasForeignKey<Pago>(p => p.CompraId);
 
             // Configuración para las relaciones uno a muchos entre Cliente y Compra
             modelBuilder.Entity<Cliente>()
@@ -98,6 +105,18 @@ namespace store.LogicaDatos
                 .HasOne(i => i.Producto)
                 .WithMany(p => p.Imagenes)
                 .HasForeignKey(i => i.ProductoId);
+            //relaciones compra pago y compra envio
+            modelBuilder.Entity<Compra>()
+                .HasOne(c => c.Pago)
+                .WithOne(p => p.Compra)
+                .HasForeignKey<Pago>(p => p.CompraId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Compra>()
+                .HasOne(c => c.Envio)
+                .WithOne(e => e.Compra)
+                .HasForeignKey<Envio>(e => e.CompraId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             //Configuracion para campos unicos 
             modelBuilder.Entity<Usuario>().HasIndex(u => u.Email).IsUnique();

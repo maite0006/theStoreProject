@@ -1,4 +1,4 @@
-﻿using store.DTOs.DTOs.Compra;
+﻿using store.LogicaNegocio.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace store.LogicaAplicacion.ICU.ICUCompra
 {
-    public interface ICUAltaCompra
+    public interface ICUConfirmarPago
     {
-        Task<int> AltaCompra(CompraDTO compra);
+        Task<bool> ConfirmarPago(int CompraID);
+        Task<bool> SimulacionMP(Pago p);
     }
 }

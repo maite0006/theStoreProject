@@ -12,12 +12,13 @@ namespace store.LogicaNegocio.IRepositorios
     public interface IRepositorioCompras: IRepositorio<Compra, Guid>
     {
         //Async methods
-        Task<ICollection<Compra>> FindByCliente(int clienteid);
+        Task<List<Compra>> FindByCliente(int clienteid);
 
         Task<Compra> FindByGuid(Guid compraGuid);
 
-        Task<ICollection<Compra>> FindPending();
+        Task<List<Compra>> FindPending();
 
-        Task<ICollection<Compra>> FindByDateRange(DateTime inicio, DateTime fin);
+        Task<List<Compra>> FindByDateRange(DateTime inicio, DateTime fin);
+        Task<List<Compra>> FindByEstado(string estado);
     }
 }

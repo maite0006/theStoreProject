@@ -30,21 +30,29 @@ namespace store.LogicaDatos.Repositorios
             return await _context.Compras
             .Include(c => c.Articulos)
             .Include(c => c.Cliente)
+            .Include(c => c.Pago)
+            .Include(c => c.Envio)
             .ToListAsync();
         }
 
-        public async Task<ICollection<Compra>> FindByCliente(int clienteid)
+        public async Task<List<Compra>> FindByCliente(int clienteid)
         {
             return await _context.Compras
             .Include(c => c.Articulos)
+            .Include(c => c.Cliente)
+            .Include(c => c.Pago)
+            .Include(c => c.Envio)
             .Where(c => c.Cliente.Id == clienteid)
             .ToListAsync();
         }
 
-        public async Task<ICollection<Compra>> FindByDateRange(DateTime inicio, DateTime fin)
+        public async Task<List<Compra>> FindByDateRange(DateTime inicio, DateTime fin)
         {
             return await _context.Compras
             .Include(c => c.Articulos)
+            .Include(c => c.Cliente)
+            .Include(c => c.Pago)
+            .Include(c => c.Envio)
             .Where(c => c.Fecha >= inicio && c.Fecha <= fin)
             .ToListAsync();
         }
@@ -53,6 +61,9 @@ namespace store.LogicaDatos.Repositorios
         {
             return await _context.Compras
             .Include(c => c.Articulos)
+            .Include(c => c.Cliente)
+            .Include(c => c.Pago)
+            .Include(c => c.Envio)
             .FirstOrDefaultAsync(c => c.Guid == compraGuid);
         }
 
@@ -60,13 +71,19 @@ namespace store.LogicaDatos.Repositorios
         {
             return await _context.Compras
             .Include(c => c.Articulos)
+            .Include(c => c.Cliente)
+            .Include(c => c.Pago)
+            .Include(c => c.Envio)
             .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<ICollection<Compra>> FindByEstado(string estado)
+        public async Task<List<Compra>> FindByEstado(string estado)
         {
             return await _context.Compras
             .Include(c => c.Articulos)
+            .Include(c => c.Cliente)
+            .Include(c => c.Pago)
+            .Include(c => c.Envio)
             .Where(c => c.EstadoCompra.ToString() == estado)
             .ToListAsync();
         }
@@ -83,9 +100,11 @@ namespace store.LogicaDatos.Repositorios
 
         public async Task<bool> UpdateAsync(Compra obj)
         {
-            return false;
+            _context.Compras.Update(obj);
+            int cambios = await _context.SaveChangesAsync();
+            return cambios > 0;
         }
-        public async Task<ICollection<Compra>> FindPending()
+        public async Task<List<Compra>> FindPending()
         {
             return await _context.Compras
             .Include(c => c.Articulos)

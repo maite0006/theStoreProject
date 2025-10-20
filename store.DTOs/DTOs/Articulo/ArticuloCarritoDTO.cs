@@ -13,6 +13,16 @@ namespace store.DTOs.DTOs.Articulo
         public string NombreProducto { get; set; }
         public int Cantidad { get; set; }
         public decimal PrecioUnitario { get; set; }
-        public bool Disponible { get; set; }
+        public string Disponible { get; set; }
+
+        public ArticuloCarritoDTO(int articuloId, int productoId, string nombreProducto, int cantidad, decimal precioUnitario)
+        {
+            ArticuloId = articuloId;
+            ProductoId = productoId;
+            NombreProducto = nombreProducto;
+            Cantidad = cantidad;
+            PrecioUnitario = precioUnitario;
+          
+        }
     }
 }

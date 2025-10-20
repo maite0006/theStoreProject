@@ -1,4 +1,5 @@
-﻿using System;
+﻿using store.DTOs.DTOs.Compra;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace store.LogicaAplicacion.ICU.ICUCarrito
 {
     public interface ICUCerrarPrecompra
     {
-        Task<bool> CerrarPrecompra(int precompraId);
+        Task<CompraDTO> CerrarPrecompra(int precompraId);
     }
 }

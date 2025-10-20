@@ -9,6 +9,9 @@ namespace store.LogicaAplicacion.ICU.ICUCompra
 {
     public interface ICUVerHistorial
     {
-        Task<List<CompraDTO>> VerHistorialCompras(int usuarioId);
+        Task<List<CompraDTO>> HistorialCompras(int usuarioId);
+        Task<List<CompraDTO>> HistorialComprasbyFecha(int usuarioId, DateTime min, DateTime max);
+        Task<List<CompraDTO>> HistorialComprasbyEstado(int usuarioId, string estado);
+        Task<List<CompraDTO>> HistorialComprasPending(int usuarioId);
     }
 }

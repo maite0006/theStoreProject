@@ -26,6 +26,18 @@ namespace store.LogicaAplicacion.Mappers
             }
             return null;
 
+
+        }
+        public static ArticuloCarritoDTO fromArticulo(Articulo articulo)
+        {
+            ArticuloCarritoDTO ret = new (articulo.Id,articulo.Producto.Id,articulo.Producto.Nombre,articulo.Cantidad,articulo.PrecioUnitario)
+            if (articulo.Producto.Activo && articulo.Producto.Stock > articulo.Cantidad)
+                ret.Disponible = "Disponible";
+            if(!articulo.Producto.Activo)
+                ret.Disponible = "Articulo no disponible";
+            if (articulo.Cantidad > articulo.Producto.Stock)
+                ret.Disponible = "Stock insuficiente para la cantidad seleccionada";
+            return ret;
         }
     }
 }

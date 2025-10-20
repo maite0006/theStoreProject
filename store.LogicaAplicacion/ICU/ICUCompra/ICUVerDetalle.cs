@@ -9,6 +9,6 @@ namespace store.LogicaAplicacion.ICU.ICUCompra
 {
     public interface ICUVerDetalle
     {
-        Task<CompraDTO> VerDetalleCompra(int compraId);
+        Task<CompraDTO> VerDetalleCompra(Guid compraId);
     }
 }
