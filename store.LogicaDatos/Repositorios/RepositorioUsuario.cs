@@ -29,20 +29,86 @@ namespace store.LogicaDatos.Repositorios
             return await _context.Usuarios.ToListAsync();
         }
 
+        public async Task<Usuario> FindByGuid(Guid UserGuid)
+        {
+            Usuario user= await _context.Usuarios
+            .FirstOrDefaultAsync(u => u.Guid == UserGuid);
+            if (user is Cliente cliente)
+            {
+                return await _context.Usuarios.OfType<Cliente>()
+                    .Include(c => c.ProductosFavoritos)
+                    .FirstOrDefaultAsync(c => c.Id == cliente.Id);
+            }
+
+            // Si es administrador, incluir productos publicados
+            if (user is Administrador admin)
+            {
+                return await _context.Usuarios.OfType<Administrador>()
+                    .Include(a => a.ProductosPublicados)
+                    .FirstOrDefaultAsync(a => a.Id == admin.Id);
+            }
+            return user;
+        }
         public async Task<Usuario> FindByEmail(string email)
         {
            
-                return await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
+                Usuario user= await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
+                if (user is Cliente cliente)
+                {
+                    return await _context.Usuarios.OfType<Cliente>()
+                        .Include(c => c.ProductosFavoritos)
+                        .FirstOrDefaultAsync(c => c.Id == cliente.Id);
+                }
+
+                // Si es administrador, incluir productos publicados
+                if (user is Administrador admin)
+                {
+                    return await _context.Usuarios.OfType<Administrador>()
+                        .Include(a => a.ProductosPublicados)
+                        .FirstOrDefaultAsync(a => a.Id == admin.Id);
+                }
+                return user;
+
         }
 
         public async Task<Usuario> FindByIdAsync(int id)
         {
-            return await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
+            Usuario user= await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
+            if (user is Cliente cliente)
+            {
+                return await _context.Usuarios.OfType<Cliente>()
+                    .Include(c => c.ProductosFavoritos)
+                    .FirstOrDefaultAsync(c => c.Id == cliente.Id);
+            }
+
+            // Si es administrador, incluir productos publicados
+            if (user is Administrador admin)
+            {
+                return await _context.Usuarios.OfType<Administrador>()
+                    .Include(a => a.ProductosPublicados)
+                    .FirstOrDefaultAsync(a => a.Id == admin.Id);
+            }
+            return user;
         }
 
         public async Task<Usuario> FindByNombre(string nombre)
         {
-            return await _context.Usuarios.FirstOrDefaultAsync(u => u.Nombre.Contains(nombre));
+            Usuario user= await _context.Usuarios.FirstOrDefaultAsync(u => u.Nombre.Contains(nombre));
+            if (user is Cliente cliente)
+            {
+                return await _context.Usuarios.OfType<Cliente>()
+                    .Include(c => c.ProductosFavoritos)
+                    .FirstOrDefaultAsync(c => c.Id == cliente.Id);
+            }
+
+            // Si es administrador, incluir productos publicados
+            if (user is Administrador admin)
+            {
+                return await _context.Usuarios.OfType<Administrador>()
+                    .Include(a => a.ProductosPublicados)
+                    .FirstOrDefaultAsync(a => a.Id == admin.Id);
+            }
+            return user;
         }
 
         public async Task<bool> RemoveAsync(int id)

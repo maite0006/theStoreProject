@@ -12,7 +12,7 @@ namespace store.LogicaNegocio.IRepositorios
         //Async methods
         Task<Usuario> FindByEmail(string email);
         Task<Usuario> FindByNombre (string nombre);
-
+        Task<Usuario> FindByGuid(Guid UserGuid);
 
     }
 }
