@@ -73,7 +73,7 @@ namespace store.LogicaAplicacion.CU.CUCompra
             }
         }
 
-        public async Task<bool> SimulacionMP(Pago p)
+        public  bool SimulacionMP(Pago p)
         {
             return p!= null;
         }

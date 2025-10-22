@@ -19,15 +19,19 @@ namespace store.LogicaAplicacion.CU.CUUsuarios
         public CUListarFavoritos(IRepositorioUsuarios repositorioUsuarios) {
             _repositorioUsuarios=repositorioUsuarios;
         }
-        public async Task<List<ProdDTO>> ListarFavoritos(Guid userGUID)
+        public async Task<ICollection<ProdDTO>> ListarFavoritos(int userID)
         {
-            Usuario user=await _repositorioUsuarios.FindByGuid(userGUID);
-            List<ProdDTO> dtos=new List<ProdDTO>();
+            Usuario user=await _repositorioUsuarios.FindByIdAsync(userID);
             Cliente cliente = user as Cliente;
-            if (user == null) {
-                throw new EntityNotFound("Cliente", userGUID);
-            }
+            if (user == null) 
+                throw new EntityNotFound("Cliente", userID);
+            
+            if (user is not Cliente cli)
+                throw new InvalidOperationException("Solo los clientes pueden tener favoritos.");
+
+            ICollection<ProdDTO> dtos=new List<ProdDTO>();
             ICollection<Producto> favoritos = cliente.ProductosFavoritos;
+
             foreach (Producto p in favoritos) { 
                 ProdDTO dto= ProdsMapper.fromProdtoDTO(p);
                 dtos.Add(dto);

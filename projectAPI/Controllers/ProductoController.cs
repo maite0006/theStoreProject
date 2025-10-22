@@ -25,12 +25,14 @@ namespace projectAPI.Controllers
             _cUObtenerProd = cuObtenerProd;
             _cUListarProds = cuListarProds;
         }
+        //Falta obtener prod
+
         [HttpGet("listar")]
         public async Task<IActionResult> getTodos() {
             try
             {
                 var lista = await _cUListarProds.obtenerTodos();
-                if (lista == null || !lista.Any())
+                if (lista == null || lista.Count == 0)
                     return Ok("En el momento no hay productos registrados.");
 
                 return Ok(lista);
@@ -46,7 +48,7 @@ namespace projectAPI.Controllers
             try
             {
                 var lista = await _cUListarProds.obtenerActivos();
-                if (lista == null || !lista.Any())
+                if (lista == null || lista.Count == 0)
                     return Ok("No se encontraron productos activos.");
                 return Ok(lista);
             }
@@ -61,7 +63,7 @@ namespace projectAPI.Controllers
             try
             {
                 var lista = await _cUListarProds.obtenerbytype(tipo);
-                if (lista == null || !lista.Any())
+                if (lista == null || lista.Count == 0)
                     return Ok("No se encontraron productos de este tipo.");
                 return Ok(lista);
             }
@@ -77,7 +79,7 @@ namespace projectAPI.Controllers
             try
             {
                 var lista = await _cUListarProds.obtenerbyPriceRange(min, max);
-                if (lista == null || !lista.Any())
+                if (lista == null || lista.Count == 0)
                     return Ok("No se encontraron productos en este rango de precio.");
                 return Ok(lista);
             }
@@ -92,7 +94,7 @@ namespace projectAPI.Controllers
             try
             {
                 var lista = await _cUListarProds.obtenerbyCategoria(cat);
-                if (lista == null || !lista.Any())
+                if (lista == null || lista.Count == 0)
                     return Ok("No hay productos registrados en esta categoria.");
                 return Ok(lista);
             }

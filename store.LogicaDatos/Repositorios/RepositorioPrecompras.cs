@@ -18,9 +18,11 @@ namespace store.LogicaDatos.Repositorios
             _context = context;
         }
 
-        public async Task<bool> ExisteArticuloEnPrecompra(int productoId, int precompraId)
+        public async Task<int?> ExisteArticuloEnPrecompra(int productoId, int precompraId)
         {
-            return await _context.Articulos.AnyAsync(a => a.ProductoId == productoId && a.PrecompraId == precompraId);
+            var art=  await _context.Articulos.FirstOrDefaultAsync(a => a.ProductoId == productoId && a.PrecompraId == precompraId);
+            return art?.Id;
+            
         }
         public async Task AddArticulo(Articulo art)
         {

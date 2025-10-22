@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace store.LogicaAplicacion.ICU.ICUUsuarios
 {
-    internal interface ICUAgregarFavorito
+    public interface ICUAgregarFavorito
     {
-        Task<bool> AgregarProductoFavorito(Guid prodGuid);
+        Task<bool> AgregarProductoFavorito(int userId, Guid prodGuid);
     }
 }

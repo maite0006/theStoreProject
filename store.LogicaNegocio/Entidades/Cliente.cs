@@ -13,7 +13,6 @@ namespace store.LogicaNegocio.Entidades
         public ICollection<Compra> HistorialCompras { get; set; } = new List<Compra>();
         public ICollection<Producto> ProductosFavoritos { get; set; } = new List<Producto>();
         public ICollection<Reseña> Reseñas { get; set; } = new List<Reseña>();
-        public int PrecompraId { get; set; }
         public Precompra Precompra { get; set; }
 
         public Cliente() { }
@@ -24,7 +23,6 @@ namespace store.LogicaNegocio.Entidades
             Pais = pais;
             Telefono = telefono;
             setPassword(password);
-            Precompra = new Precompra();
         }
 
         public void AgregarProductoFavorito(Producto producto)

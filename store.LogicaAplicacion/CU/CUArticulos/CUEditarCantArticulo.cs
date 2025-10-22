@@ -39,7 +39,7 @@ namespace store.LogicaAplicacion.CU.CUArticulos
             {
                 throw new CantidadArticuloInvalida("La cantidad solicitada excede el stock disponible del producto.");
             }
-            articulo.Cantidad = nuevaCantidad;
+            articulo.Cantidad += nuevaCantidad;
             _context.SaveChanges();
             return true;
         }

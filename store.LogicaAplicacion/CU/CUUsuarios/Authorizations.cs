@@ -1,5 +1,13 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.IdentityModel.Tokens;
+using store.DTOs.DTOs.User;
+using store.DTOs.DTOs.User.Authorization;
+using store.DTOs.Mappers;
 using store.LogicaAplicacion.ICU.ICUUsuarios;
+using store.LogicaDatos;
+using store.LogicaNegocio.CustomExceptions.UserExceptions;
+using store.LogicaNegocio.Entidades;
 using store.LogicaNegocio.IRepositorios;
 using store.Utilidades;
 using System;
@@ -7,12 +15,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using store.LogicaNegocio.CustomExceptions.UserExceptions;
-using store.LogicaNegocio.Entidades;
-using store.DTOs.DTOs.User.Authorization;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using store.DTOs.Mappers;
-using store.DTOs.DTOs.User;
 
 namespace store.LogicaAplicacion.CU.CUUsuarios
 {
@@ -20,9 +22,11 @@ namespace store.LogicaAplicacion.CU.CUUsuarios
     {
         private readonly IRepositorioUsuarios _repositorioUsuarios;
         private readonly JwtTokenService _JwtTokenService;
-        public Authorizations(IRepositorioUsuarios repositorioUsuarios, JwtTokenService jwt)          {
+        private readonly eStoreDBContext _context;
+        public Authorizations(IRepositorioUsuarios repositorioUsuarios, JwtTokenService jwt, eStoreDBContext context)          {
             _repositorioUsuarios = repositorioUsuarios;
             _JwtTokenService = jwt;
+            _context = context;
         }
 
         public async Task<UserOutputDTO> LoginAsync(LoginDTO dto)
@@ -63,6 +67,10 @@ namespace store.LogicaAplicacion.CU.CUUsuarios
             try
             {
                 await _repositorioUsuarios.AddAsync(user);
+                var precompra = new Precompra();
+                user.Precompra = precompra;
+                await _context.SaveChangesAsync();
+               
             }
             catch (Exception ex)
             {

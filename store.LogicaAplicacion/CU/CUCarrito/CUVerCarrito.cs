@@ -44,15 +44,8 @@ namespace store.LogicaAplicacion.CU.CUCarrito
                 else
                     estado = "Disponible";
 
-                carritoDto.Articulos.Add(new ArticuloCarritoDTO
-                {
-                    ArticuloId = art.Id,
-                    ProductoId = art.ProductoId,
-                    NombreProducto = art.Producto.Nombre,
-                    Cantidad = art.Cantidad,
-                    PrecioUnitario = art.PrecioUnitario,
-                    Disponible = estado
-                });
+                ArticuloCarritoDTO dto = new ArticuloCarritoDTO(art.Id, art.ProductoId, art.Producto.Nombre, art.Cantidad, art.PrecioUnitario);
+                dto.Disponible = estado;
             }
 
             return carritoDto;

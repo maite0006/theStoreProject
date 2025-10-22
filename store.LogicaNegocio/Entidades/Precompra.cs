@@ -43,6 +43,8 @@ namespace store.LogicaNegocio.Entidades
                 CalcularTotal();
             }
         }
+        
+           
         public decimal CalcularTotal()
         {
             try
@@ -54,8 +56,12 @@ namespace store.LogicaNegocio.Entidades
                 return 0;
             }
 
-          
+
         }
 
+        
     }
+
+
 }
+

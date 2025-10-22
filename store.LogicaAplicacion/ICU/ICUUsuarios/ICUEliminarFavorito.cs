@@ -8,6 +8,6 @@ namespace store.LogicaAplicacion.ICU.ICUUsuarios
 {
     public interface ICUEliminarFavorito
     {
-        void EliminarProductoFavorito(Guid prodGuid);
+        Task EliminarProductoFavorito(int userId, Guid prodGuid);
     }
 }

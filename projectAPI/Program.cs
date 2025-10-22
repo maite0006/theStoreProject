@@ -3,11 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using store.LogicaAplicacion.CU.CUArticulos;
+using store.LogicaAplicacion.CU.CUCarrito;
 using store.LogicaAplicacion.CU.CUCategory;
+using store.LogicaAplicacion.CU.CUCompra;
 using store.LogicaAplicacion.CU.CUProductos;
 using store.LogicaAplicacion.CU.CUUsuarios;
 using store.LogicaAplicacion.ICU.ICUArticulos;
+using store.LogicaAplicacion.ICU.ICUCarrito;
 using store.LogicaAplicacion.ICU.ICUCategory;
+using store.LogicaAplicacion.ICU.ICUCompra;
 using store.LogicaAplicacion.ICU.ICUProductos;
 using store.LogicaAplicacion.ICU.ICUUsuarios;
 using store.LogicaDatos;
@@ -36,18 +40,38 @@ builder.Services.AddScoped<IRepositorioPrecompras, RepositorioPrecompras>();
 builder.Services.AddScoped<IRepositorioReseñas, RepositorioReseñas>();
 
 //CU injections
-builder.Services.AddScoped<IAuthorizations, Authorizations>();
+// Usuario
+builder.Services.AddScoped<IAuthorizations, Authorizations>();//Login y SignUp(Este ultimo unicamente para CLI)
 builder.Services.AddScoped<ICUChangePass, CUChangePass>();
+builder.Services.AddScoped<ICUAgregarFavorito, CUAgregarFavorito>();
+builder.Services.AddScoped<ICUEliminarFavorito, CUEliminarFavorito>();
+builder.Services.AddScoped<ICUListarFavoritos, CUListarFavoritos>();
+// Productos
 builder.Services.AddScoped<ICUAltaProd, CUAltaProd>();
 builder.Services.AddScoped<ICUBajaProd,CUBajaProd>();
 builder.Services.AddScoped<ICUListarProds, CUListarProds>();
 builder.Services.AddScoped<ICUObtenerProd, CUObtenerProd>();
+// Categorias
 builder.Services.AddScoped<ICUListarCategorias, CUListarCategorias>();
 builder.Services.AddScoped<ICUAltaCategoria, CUAltaCategoria>();
 builder.Services.AddScoped<ICUBajaCategoria, CUBajaCategoria>();
+// Articulo
 builder.Services.AddScoped<ICUEditarCantArt, CUEditarCantArticulo>();
 builder.Services.AddScoped<ICUAltaArticulo, CUAltaArticulo>();
 builder.Services.AddScoped<ICUEliminarArticulo, CUEliminarArticulo>();
+// Precompra/Carrito
+builder.Services.AddScoped<ICUAgregaralCarrito, CUAgregaralCarrito>();
+builder.Services.AddScoped<ICUCalcularTotal, CUCalcularTotal>();
+builder.Services.AddScoped<ICUCerrarPrecompra, CUCerrarPrecompra>();
+builder.Services.AddScoped<ICUVerCarrito, CUVerCarrito>();
+//Compra
+builder.Services.AddScoped<ICUActualizarEstadoEnvio, CUActualizarEstadoEnvio>();
+builder.Services.AddScoped<ICUConfigurarCompra, CUConfiguracionCompra>();
+builder.Services.AddScoped<ICUConfirmarPago, CUConfirmarPago>();
+builder.Services.AddScoped<ICUVerDetalle, CUVerDetalle>();
+builder.Services.AddScoped<ICUVerHistorial, CUVerHistorial>();
+
+
 
 
 //JWT Service

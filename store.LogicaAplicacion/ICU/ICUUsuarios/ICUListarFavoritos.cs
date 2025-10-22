@@ -9,6 +9,6 @@ namespace store.LogicaAplicacion.ICU.ICUUsuarios
 {
     public interface ICUListarFavoritos
     {
-        Task<List<ProdDTO>> ListarFavoritos(Guid userGUID);
+        Task<ICollection<ProdDTO>> ListarFavoritos(int userID);
     }
 }

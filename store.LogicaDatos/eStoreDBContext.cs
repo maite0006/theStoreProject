@@ -39,7 +39,7 @@ namespace store.LogicaDatos
 
             modelBuilder.Entity<Administrador>()
                 .HasMany(a => a.ProductosPublicados)
-                .WithMany() // no especificamos navegación inversa
+                .WithMany() // no navegación inversa
                 .UsingEntity<Dictionary<string, object>>(
                     "AdministradorProductoPublicados");
             modelBuilder.Entity<Cliente>()
@@ -58,7 +58,7 @@ namespace store.LogicaDatos
 
              modelBuilder.Entity<Pago>()
                 .HasOne(p => p.Compra)
-                .WithOne(c => c.Pago)  // suponiendo que Compra tiene Pago
+                .WithOne(c => c.Pago)  // 
                 .HasForeignKey<Pago>(p => p.CompraId);
 
             // Configuración para las relaciones uno a muchos entre Cliente y Compra
@@ -70,7 +70,8 @@ namespace store.LogicaDatos
             modelBuilder.Entity<Cliente>()
                 .HasOne(c => c.Precompra)
                 .WithOne(pc => pc.Cliente)
-                .HasForeignKey<Precompra>(pc => pc.ClienteId);
+                .HasForeignKey<Precompra>(pc => pc.ClienteId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Configuración para las relaciones uno a muchos entre Cliente y Reseña
             modelBuilder.Entity<Cliente>()

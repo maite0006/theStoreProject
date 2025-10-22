@@ -41,13 +41,14 @@ namespace store.LogicaAplicacion.CU.CUCarrito
 
             if (dto.cantidad > producto.Stock)
                 throw new CantidadArticuloInvalida("No hay stock suficiente para la cantidad solicitada.");
-            Articulo articulo= Mappers.ArticuloMapper.FromDTO(dto);
+            //Articulo articulo= Mappers.ArticuloMapper.FromDTO(dto);
             int precompraId = dto.precompraId ?? throw new ArgumentException("El ArtDTO debe tener un precompraId válido para agregar al carrito.");
-            bool existe= await _repositorioPrecompras.ExisteArticuloEnPrecompra(dto.productoId, precompraId);
-            if (existe)
+            int? existe= await _repositorioPrecompras.ExisteArticuloEnPrecompra(dto.productoId, precompraId);
+
+            if (existe!=null)
             {
-                return await _cuEditarCantArt.EditarCantidadArticulo( articulo.Id, dto.cantidad);
-                
+                int id = (int)existe;
+                return await _cuEditarCantArt.EditarCantidadArticulo( id, dto.cantidad);  
             }
             else
             {
