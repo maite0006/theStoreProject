@@ -22,13 +22,24 @@ namespace store.LogicaNegocio.Entidades
         {
             return "Administrador";
         }
-        public void PublicarProducto(Producto producto)//Reevaluar metodo
+        public void AsociarProducto(Producto producto)
         {
             ProductosPublicados.Add(producto);
         }
         public bool EliminarProducto(int productoId)
         {
             var producto = ProductosPublicados.FirstOrDefault(p => p.Id == productoId);
+            if (producto != null)
+            {
+                ProductosPublicados.Remove(producto);
+                return true;
+            }
+            return false;
+
+        }
+        public bool EliminarProducto(Guid productoGuid)
+        {
+            var producto = ProductosPublicados.FirstOrDefault(p => p.Guid == productoGuid);
             if (producto != null)
             {
                 ProductosPublicados.Remove(producto);

@@ -9,6 +9,6 @@ namespace store.LogicaAplicacion.ICU.ICUProductos
     public interface ICUBajaProd
     {
         Task<bool> BajaProductoAsync(Guid productoGuid);
-        Task<bool> EliminarProd(Guid productoGuid);
+        Task<bool> EliminarProd(Guid productoGuid, int admId);
     }
 }

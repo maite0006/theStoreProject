@@ -14,12 +14,10 @@ namespace store.LogicaAplicacion.CU.CUCarrito
     public class CUVerCarrito : ICUVerCarrito
     {
         private readonly IRepositorioPrecompras _repositorio;
-        private readonly ICUCalcularTotal _cuCalcularTotalCarrito;
 
-        public CUVerCarrito(IRepositorioPrecompras repositorio, ICUCalcularTotal cUCalcularTotal)
+        public CUVerCarrito(IRepositorioPrecompras repositorio)
         {
             _repositorio = repositorio;
-            _cuCalcularTotalCarrito = cUCalcularTotal;
         }
         public async Task<CarritoDTO> VerCarrito(int usuarioId)
         {
@@ -31,21 +29,13 @@ namespace store.LogicaAplicacion.CU.CUCarrito
             var carritoDto = new CarritoDTO
             {
                  PrecompraId= precompra.Id,
-                Total =  await _cuCalcularTotalCarrito.CalcularTotalCarrito(precompra.Id),
+                Total =  precompra.CalcularTotal(),
             };
 
             foreach (var art in precompra.Articulos)
             {
-                string estado;
-                if (!art.Producto.Activo)
-                    estado = "Desactivado";
-                else if (art.Cantidad > art.Producto.Stock)
-                    estado = "SinStock";
-                else
-                    estado = "Disponible";
-
-                ArticuloCarritoDTO dto = new ArticuloCarritoDTO(art.Id, art.ProductoId, art.Producto.Nombre, art.Cantidad, art.PrecioUnitario);
-                dto.Disponible = estado;
+                ArticuloCarritoDTO dto= Mappers.ArticuloMapper.FromArticulo(art);
+                carritoDto.Articulos.Add(dto);
             }
 
             return carritoDto;

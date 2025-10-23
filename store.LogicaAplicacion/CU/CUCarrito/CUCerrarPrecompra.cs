@@ -19,12 +19,10 @@ namespace store.LogicaAplicacion.CU.CUCarrito
     {
         private readonly IRepositorioPrecompras _repositorioPrecompras;
         private readonly IRepositorioCompras _repositorioCompras;
-        private readonly ICUCalcularTotal _cuCalcularTotalCarrito;
         
-        public  CUCerrarPrecompra(IRepositorioPrecompras repositorio, ICUCalcularTotal cUCalcularTotal, IRepositorioCompras repositorioCompras)
+        public  CUCerrarPrecompra(IRepositorioPrecompras repositorio, IRepositorioCompras repositorioCompras)
         {
             _repositorioPrecompras = repositorio;
-            _cuCalcularTotalCarrito = cUCalcularTotal;
             _repositorioCompras=repositorioCompras;
             
         }
@@ -46,7 +44,7 @@ namespace store.LogicaAplicacion.CU.CUCarrito
             {
                 ClienteId = precompra.ClienteId,
                 Articulos = articulosValidos,
-                Total = await _cuCalcularTotalCarrito.CalcularTotalCarrito(precompraId),
+                Total = precompra.CalcularTotal(),
                 Fecha = DateTime.Now,
            
             };
@@ -55,7 +53,7 @@ namespace store.LogicaAplicacion.CU.CUCarrito
             precompra.Articulos.Clear();
             await _repositorioPrecompras.UpdateAsync(precompra);
 
-            return CompraMapper.fromCompra(compra);
+            return CompraMapper.FromCompra(compra);
         }
     }
 }

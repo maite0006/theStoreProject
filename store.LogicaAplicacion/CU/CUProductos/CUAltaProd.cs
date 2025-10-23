@@ -1,6 +1,7 @@
 ﻿using store.DTOs.DTOs.Producto;
 using store.LogicaAplicacion.ICU.ICUProductos;
 using store.LogicaAplicacion.Mappers;
+using store.LogicaDatos.Repositorios;
 using store.LogicaNegocio.CustomExceptions;
 using store.LogicaNegocio.CustomExceptions.ProdExceptions;
 using store.LogicaNegocio.Entidades;
@@ -18,13 +19,18 @@ namespace store.LogicaAplicacion.CU.CUProductos
     {
         private readonly IRepositorioProductos _repoProductos;
         private readonly IRepositorioCategorias _repoCategorias;
-        public CUAltaProd(IRepositorioProductos repoProductos, IRepositorioCategorias repoCategorias)
+        private readonly IRepositorioUsuarios _repositorioUsuarios;
+        public CUAltaProd(IRepositorioProductos repoProductos, IRepositorioCategorias repoCategorias,IRepositorioUsuarios repositorioUsuarios)
         {
             _repoProductos = repoProductos;
             _repoCategorias = repoCategorias;
+            _repositorioUsuarios = repositorioUsuarios;
         }
-        public async Task<AltaProdOutDTO> AgregarP(AltaProdInDTO dto)
+        public async Task<AltaProdOutDTO> AgregarP(AltaProdInDTO dto, int admID)
         {
+            Administrador adm = (Administrador)await _repositorioUsuarios.FindByIdAsync(admID);
+            if (adm == null)
+                throw new EntityNotFound("Administrador", admID);
             AltaProdOutDTO dtoOut= new AltaProdOutDTO();
             if (dto.Tipo != "tapiz" && dto.Tipo != "cuadro" && dto.Tipo != "poster")
             {
@@ -35,15 +41,17 @@ namespace store.LogicaAplicacion.CU.CUProductos
                 case "tapiz":
                     Tapiz tapiz = ProdsMapper.MapToTapiz(dto);
                     dtoOut = await MapearCatsGuardar(tapiz, dto.Categorias);
+                    adm.AsociarProducto(tapiz);
                     break;
                 case "cuadro":
                     Cuadro cuadro = ProdsMapper.MapToCuadro(dto);
                     dtoOut = await MapearCatsGuardar(cuadro, dto.Categorias);
+                    adm.AsociarProducto(cuadro);
                     break;
                 case "poster":
-
                     Poster poster = ProdsMapper.MapToPoster(dto);
                     dtoOut = await MapearCatsGuardar(poster, dto.Categorias);
+                    adm.AsociarProducto(poster);
                     break;
             }
             return dtoOut;

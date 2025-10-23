@@ -28,7 +28,7 @@ namespace store.LogicaAplicacion.Mappers
 
 
         }
-        public static ArticuloCarritoDTO fromArticulo(Articulo articulo)
+        public static ArticuloCarritoDTO FromArticulo(Articulo articulo)
         {
             ArticuloCarritoDTO ret = new(articulo.Id, articulo.Producto.Id, articulo.Producto.Nombre, articulo.Cantidad, articulo.PrecioUnitario);
             if (articulo.Producto.Activo && articulo.Producto.Stock > articulo.Cantidad)

@@ -49,7 +49,15 @@ namespace store.LogicaNegocio.Entidades
         {
             try
             {
-                return Articulos.Sum(a => a.Cantidad * a.PrecioUnitario);
+                decimal total = 0;
+                foreach (var art in Articulos)
+                {
+                    if (art.Producto.Activo && art.Cantidad <= art.Producto.Stock)
+                    {
+                        total += art.Cantidad * art.PrecioUnitario;
+                    }
+                }
+                return total;
             }
             catch
             {

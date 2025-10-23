@@ -61,7 +61,6 @@ builder.Services.AddScoped<ICUAltaArticulo, CUAltaArticulo>();
 builder.Services.AddScoped<ICUEliminarArticulo, CUEliminarArticulo>();
 // Precompra/Carrito
 builder.Services.AddScoped<ICUAgregaralCarrito, CUAgregaralCarrito>();
-builder.Services.AddScoped<ICUCalcularTotal, CUCalcularTotal>();
 builder.Services.AddScoped<ICUCerrarPrecompra, CUCerrarPrecompra>();
 builder.Services.AddScoped<ICUVerCarrito, CUVerCarrito>();
 //Compra

@@ -10,7 +10,7 @@ namespace store.LogicaAplicacion.ICU.ICUProductos
 {
     public interface ICUAltaProd
     {
-        Task<AltaProdOutDTO> AgregarP(AltaProdInDTO dto);
+        Task<AltaProdOutDTO> AgregarP(AltaProdInDTO dto, int admID);
         Task<AltaProdOutDTO> MapearCatsGuardar(Producto producto, List<int> categorias);
 
     }

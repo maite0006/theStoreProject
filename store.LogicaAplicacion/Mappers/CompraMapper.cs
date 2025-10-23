@@ -11,14 +11,14 @@ namespace store.LogicaAplicacion.Mappers
 {
     public class CompraMapper
     {
-        public static CompraDTO fromCompra(Compra compra)
+        public static CompraDTO FromCompra(Compra compra)
         {
             CompraDTO ret = new CompraDTO();
             ret.CompraId = compra.Id;
             ret.Total=compra.Total;
             ret.EstadoCompra=compra.EstadoCompra.ToString();
             foreach (var item in compra.Articulos) {
-                ArticuloCarritoDTO art = ArticuloMapper.fromArticulo(item);
+                ArticuloCarritoDTO art = ArticuloMapper.FromArticulo(item);
                 ret.Articulos.Add(art);
             }
             if (compra.Pago != null)

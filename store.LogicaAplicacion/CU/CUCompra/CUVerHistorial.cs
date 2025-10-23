@@ -26,7 +26,7 @@ namespace store.LogicaAplicacion.CU.CUCompra
             List<Compra> comprasUser= compras.Where(c => c.ClienteId == usuarioId).ToList();
             foreach (Compra compra in comprasUser)
             {
-                CompraDTO compraDTO = CompraMapper.fromCompra(compra);
+                CompraDTO compraDTO = CompraMapper.FromCompra(compra);
                 compraDTOs.Add(compraDTO);
             }
             return compraDTOs;
@@ -40,7 +40,7 @@ namespace store.LogicaAplicacion.CU.CUCompra
             List<Compra> comprasUser = compras.Where(c => c.ClienteId == usuarioId).ToList();
             foreach (Compra compra in comprasUser)
             {
-                CompraDTO compraDTO = CompraMapper.fromCompra(compra);
+                CompraDTO compraDTO = CompraMapper.FromCompra(compra);
                 compraDTOs.Add(compraDTO);
             }
             return compraDTOs;
@@ -53,7 +53,7 @@ namespace store.LogicaAplicacion.CU.CUCompra
             List<Compra> comprasUser= compras.Where(c => c.ClienteId == usuarioId).ToList();
             foreach (Compra compra in comprasUser)
             {
-                CompraDTO compraDTO = CompraMapper.fromCompra(compra);
+                CompraDTO compraDTO = CompraMapper.FromCompra(compra);
                 compraDTOs.Add(compraDTO);
             }
             return compraDTOs;
@@ -66,7 +66,7 @@ namespace store.LogicaAplicacion.CU.CUCompra
             List<Compra> comprasUser = compras.Where(c => c.ClienteId == usuarioId).ToList();
             foreach (Compra compra in comprasUser)
             {
-                CompraDTO compraDTO = CompraMapper.fromCompra(compra);
+                CompraDTO compraDTO = CompraMapper.FromCompra(compra);
                 compraDTOs.Add(compraDTO);
             }
             return compraDTOs;

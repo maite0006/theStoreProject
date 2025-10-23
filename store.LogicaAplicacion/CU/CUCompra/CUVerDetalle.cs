@@ -24,7 +24,7 @@ namespace store.LogicaAplicacion.CU.CUCompra
             Compra compra= await _repositorioCompras.FindByGuid(compraId);
             if (compra == null )
                 throw new EntityNotFound("Compra", compraId);
-            CompraDTO dto= CompraMapper.fromCompra(compra);
+            CompraDTO dto= CompraMapper.FromCompra(compra);
             return dto;
 
         }
