@@ -14,4 +14,9 @@
     <ProjectReference Include="..\store.Utilidades\store.Utilidades.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CU\CUAuditorias\" />
+    <Folder Include="CU\CUPagos\" />
+  </ItemGroup>
+
 </Project>

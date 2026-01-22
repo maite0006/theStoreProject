@@ -1,4 +1,5 @@
-﻿using System;
+﻿using store.LogicaNegocio.CustomExceptions.ArticuloExceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,17 +20,49 @@ namespace store.LogicaNegocio.Entidades
         {
             ClienteId = clienteId;
         }
-        public void AgregarArticulo(Articulo articulo)
+        public void ActualizarCantidadArticulo(Producto producto, int cantidadDelta)
         {
-            var articuloExistente = Articulos.FirstOrDefault(a => a.ProductoId == articulo.ProductoId);
-            if (articuloExistente != null)
+            if (!producto.Activo)
+                throw new ErrorFlujoArticulo("El producto no está activo.");
+
+            Articulo articulo = Articulos
+                .FirstOrDefault(a => a.ProductoId == producto.Id);
+            if (articulo == null)
             {
-                articuloExistente.Cantidad += articulo.Cantidad;
-                articuloExistente.PrecioUnitario = articulo.PrecioUnitario; // Actualiza el precio unitario si es necesario
+                if (cantidadDelta <= 0)
+                    throw new ErrorFlujoArticulo(
+                        "No se puede quitar un artículo que no existe en el carrito."
+                    );
+
+                if (cantidadDelta > producto.Stock)
+                    throw new CantidadArticuloInvalida(
+                        "No hay stock suficiente para agregar el artículo."
+                    );
+                Articulo nuevo = new Articulo();
+                nuevo.ProductoId = producto.Id;
+                nuevo.Producto= producto;
+                nuevo.Cantidad = cantidadDelta;
+                nuevo.PrecioUnitario = producto.Precio;
+                Articulos.Add(nuevo);
+
+                CalcularTotal();
+                return;
+            }
+            int nuevaCantidad = articulo.Cantidad + cantidadDelta;
+
+            if (nuevaCantidad > producto.Stock)
+                throw new CantidadArticuloInvalida(
+                    "No hay stock suficiente para la cantidad solicitada."
+                );
+
+            if (nuevaCantidad <= 0)
+            {
+                Articulos.Remove(articulo);
             }
             else
             {
-                Articulos.Add(articulo);
+                articulo.Cantidad = nuevaCantidad;
+                articulo.PrecioUnitario = producto.Precio;
             }
             CalcularTotal();
         }
@@ -52,7 +85,7 @@ namespace store.LogicaNegocio.Entidades
                 decimal total = 0;
                 foreach (var art in Articulos)
                 {
-                    if (art.Producto.Activo && art.Cantidad <= art.Producto.Stock)
+                    if (art.EvaluarDisponibilidad(art.Producto.Stock, art.Producto.Activo))
                     {
                         total += art.Cantidad * art.PrecioUnitario;
                     }
@@ -67,7 +100,12 @@ namespace store.LogicaNegocio.Entidades
 
         }
 
-        
+        public void Vaciar()
+        {
+            Articulos.Clear();
+        }
+
+
     }
 
 

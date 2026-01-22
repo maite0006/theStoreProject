@@ -55,14 +55,11 @@ builder.Services.AddScoped<ICUObtenerProd, CUObtenerProd>();
 builder.Services.AddScoped<ICUListarCategorias, CUListarCategorias>();
 builder.Services.AddScoped<ICUAltaCategoria, CUAltaCategoria>();
 builder.Services.AddScoped<ICUBajaCategoria, CUBajaCategoria>();
-// Articulo
-builder.Services.AddScoped<ICUEditarCantArt, CUEditarCantArticulo>();
-builder.Services.AddScoped<ICUAltaArticulo, CUAltaArticulo>();
-builder.Services.AddScoped<ICUEliminarArticulo, CUEliminarArticulo>();
 // Precompra/Carrito
-builder.Services.AddScoped<ICUAgregaralCarrito, CUAgregaralCarrito>();
+builder.Services.AddScoped<store.LogicaAplicacion.ICU.ICUCarrito.ICUOperarArticuloCarrito, CUOperarArticuloCarrito>();
 builder.Services.AddScoped<ICUCerrarPrecompra, CUCerrarPrecompra>();
 builder.Services.AddScoped<ICUVerCarrito, CUVerCarrito>();
+builder.Services.AddScoped<ICUVaciarCarrito, ICUVaciarCarrito>();
 //Compra
 builder.Services.AddScoped<ICUActualizarEstadoEnvio, CUActualizarEstadoEnvio>();
 builder.Services.AddScoped<ICUConfigurarCompra, CUConfiguracionCompra>();

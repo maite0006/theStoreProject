@@ -38,6 +38,11 @@ namespace store.LogicaNegocio.Entidades
             PrecioUnitario = precioUnitario;
             CompraId = compraId;
         }
+        public bool EvaluarDisponibilidad(int stockActual, bool productoActivo)
+        {
+            return productoActivo && stockActual >= Cantidad;
+        }
+
 
 
     }

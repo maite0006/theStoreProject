@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace store.LogicaAplicacion.ICU.ICUArticulos
+namespace store.LogicaAplicacion.ICU.ICUCarrito
 {
-    public interface ICUAltaArticulo
+    public interface ICUOperarArticuloCarrito
     {
-        Task<int> AltaArticulo(ArtDTO dto);
+        Task<bool> Ejecutar(ArtDTO art);
     }
 }
