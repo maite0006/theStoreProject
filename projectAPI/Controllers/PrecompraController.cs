@@ -99,7 +99,7 @@ namespace projectAPI.Controllers
             try
             {
 
-                await _cuVaciarCarrito.Vaciar(userId);
+                await _cuVaciarCarrito.Vaciar(id);
 
                 return Ok("Carrito vaciado correctamente");
             }

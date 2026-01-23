@@ -12,14 +12,14 @@ using System.Threading.Tasks;
 
 namespace store.LogicaAplicacion.CU.CUCompra
 {
-    public class CUVerHistorial : ICUVerHistorial
+    public class CUVerHistorialUsuario : ICUVerHistorialUsuario
     {
         private readonly IRepositorioCompras _repositorioCompras;
-        public CUVerHistorial(IRepositorioCompras repositorioCompras)
+        public CUVerHistorialUsuario(IRepositorioCompras repositorioCompras)
         {
             _repositorioCompras=repositorioCompras;
         }
-        public async Task<List<CompraDTO>> HistorialCompras(int usuarioId)
+        public async Task<List<CompraDTO>> HistorialComprasU(int usuarioId)
         {
             List<CompraDTO> compraDTOs = new List<CompraDTO>();
             List<Compra> compras= await _repositorioCompras.FindAllAsync();
@@ -33,7 +33,7 @@ namespace store.LogicaAplicacion.CU.CUCompra
             
         }
 
-        public async Task<List<CompraDTO>> HistorialComprasbyEstado(int usuarioId, string estado)
+        public async Task<List<CompraDTO>> HistorialComprasbyEstadoU(int usuarioId, string estado)
         {
             List<CompraDTO> compraDTOs = new List<CompraDTO>();
             List<Compra> compras = await _repositorioCompras.FindByEstado(estado);
@@ -46,7 +46,7 @@ namespace store.LogicaAplicacion.CU.CUCompra
             return compraDTOs;
         }
 
-        public async Task <List<CompraDTO>> HistorialComprasbyFecha(int usuarioId, DateTime min, DateTime max)
+        public async Task <List<CompraDTO>> HistorialComprasbyFechaU(int usuarioId, DateTime min, DateTime max)
         {
             List<CompraDTO> compraDTOs = new List<CompraDTO>();
             List<Compra> compras = await _repositorioCompras.FindByDateRange(min,max);
@@ -59,7 +59,7 @@ namespace store.LogicaAplicacion.CU.CUCompra
             return compraDTOs;
         }
 
-        public async Task<List<CompraDTO>> HistorialComprasPending(int usuarioId)
+        public async Task<List<CompraDTO>> HistorialComprasPendingU(int usuarioId)
         {
             List<CompraDTO> compraDTOs = new List<CompraDTO>();
             List<Compra> compras = await _repositorioCompras.FindPending();
@@ -71,7 +71,8 @@ namespace store.LogicaAplicacion.CU.CUCompra
             }
             return compraDTOs;
         }
+       
 
-        
+
     }
 }

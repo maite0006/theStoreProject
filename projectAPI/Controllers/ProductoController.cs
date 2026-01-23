@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using store.DTOs.DTOs.Producto;
+using store.LogicaAplicacion.CU.CUProductos;
 using store.LogicaAplicacion.ICU.ICUProductos;
 using store.LogicaNegocio.CustomExceptions;
 using store.LogicaNegocio.CustomExceptions.ProdExceptions;
@@ -18,13 +19,19 @@ namespace projectAPI.Controllers
         private readonly ICUListarProds _cUListarProds;
         private readonly ICUBajaProd _cUBajaProd;
         private readonly ICUAltaProd _cUAltaProd;
+        private readonly ICUMarcarProductoDestacado _cuMarcarProductoDestacado;
+        private readonly ICUQuitarProductoDestacado _cuQuitarProductoDestacado;
+        private readonly ICUListarProdDestacados _cuListarProdDestacados;
 
-        public ProductoController(ICUAltaProd cuAltaprod, ICUBajaProd cuBajaProd, ICUListarProds cuListarProds, ICUObtenerProd cuObtenerProd)
+        public ProductoController(ICUAltaProd cuAltaprod, ICUBajaProd cuBajaProd, ICUListarProds cuListarProds, ICUObtenerProd cuObtenerProd, ICUMarcarProductoDestacado cuMarcarProductoDestacado, ICUQuitarProductoDestacado cuQuitarProductoDestacado, ICUListarProdDestacados cuListarProdDestacados)
         {
             _cUAltaProd = cuAltaprod;
             _cUBajaProd = cuBajaProd;
             _cUObtenerProd = cuObtenerProd;
             _cUListarProds = cuListarProds;
+            _cuMarcarProductoDestacado = cuMarcarProductoDestacado;
+            _cuQuitarProductoDestacado = cuQuitarProductoDestacado;
+            _cuListarProdDestacados = cuListarProdDestacados;
         }
         //Falta obtener prod
 
@@ -184,8 +191,46 @@ namespace projectAPI.Controllers
                 return StatusCode(500, new { mensaje = "Error interno del servidor", detalle = ex.Message });
             }
         }
+        [HttpPost("{id}/destacar")]
+        [Authorize(Roles = "Administrador")]
+        public async Task<IActionResult> Destacar(int id)
+        {
+            try
+            {
+                await _cuMarcarProductoDestacado.Ejecutar(id);
+                return NoContent();
+            }
+            catch (EntityNotFound ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (StockInsuficiente ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpDelete("{id}/destacar")]
+        [Authorize(Roles = "Adm")]
+        public async Task<IActionResult> QuitarDestacado(int id)
+        {
+            try
+            {
+                await _cuQuitarProductoDestacado.Ejecutar(id);
+                return NoContent();
+            }
+            catch (EntityNotFound ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+        [HttpGet("destacados")]
+        [Authorize(Roles = "Adm")]
 
-
+        public async Task<IActionResult> ListarDestacados()
+        {
+            var productos = await _cuListarProdDestacados.Ejecutar();
+            return Ok(productos);
+        }
 
 
 

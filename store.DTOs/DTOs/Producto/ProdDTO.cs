@@ -10,6 +10,7 @@ namespace store.DTOs.DTOs.Producto
     public class ProdDTO
     {
 
+        
         [Required]
         public string Nombre { get; set; }
         [Required]

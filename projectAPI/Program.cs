@@ -51,6 +51,9 @@ builder.Services.AddScoped<ICUAltaProd, CUAltaProd>();
 builder.Services.AddScoped<ICUBajaProd,CUBajaProd>();
 builder.Services.AddScoped<ICUListarProds, CUListarProds>();
 builder.Services.AddScoped<ICUObtenerProd, CUObtenerProd>();
+builder.Services.AddScoped<ICUListarProdDestacados, CUListarProductosDestacados>();
+builder.Services.AddScoped<ICUMarcarProductoDestacado, CUMarcarProductoDestacado>();
+builder.Services.AddScoped<ICUQuitarProductoDestacado, CUQuitarProdDestacado>();
 // Categorias
 builder.Services.AddScoped<ICUListarCategorias, CUListarCategorias>();
 builder.Services.AddScoped<ICUAltaCategoria, CUAltaCategoria>();
@@ -65,7 +68,9 @@ builder.Services.AddScoped<ICUActualizarEstadoEnvio, CUActualizarEstadoEnvio>();
 builder.Services.AddScoped<ICUConfigurarCompra, CUConfiguracionCompra>();
 builder.Services.AddScoped<ICUConfirmarPago, CUConfirmarPago>();
 builder.Services.AddScoped<ICUVerDetalle, CUVerDetalle>();
-builder.Services.AddScoped<ICUVerHistorial, CUVerHistorial>();
+builder.Services.AddScoped<ICUVerHistorialUsuario, CUVerHistorialUsuario>();
+builder.Services.AddScoped<ICUHistorialGeneralCompras, CUHistorialGeneralCompras>();
+
 
 
 
