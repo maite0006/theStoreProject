@@ -16,10 +16,10 @@ namespace store.LogicaNegocio.Entidades
         public DateTime Fecha { get; set; } = DateTime.Now;
         public int CompraId { get; set; }   
         public Compra Compra { get; set; }
-
+        public string ProviderPaymentId { get; set; }// MP ID
         public Pago() { }
     }
 
-    
+    public enum MetodoPago { MercadoPago, Transferencia }
     public enum EstadoPago { Pendiente, Aprobado, Rechazado }
 }

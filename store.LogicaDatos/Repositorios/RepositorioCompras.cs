@@ -30,7 +30,7 @@ namespace store.LogicaDatos.Repositorios
             return await _context.Compras
             .Include(c => c.Articulos)
             .Include(c => c.Cliente)
-            .Include(c => c.Pago)
+            .Include(c => c.Pagos)
             .Include(c => c.Envio)
             .ToListAsync();
         }
@@ -40,7 +40,7 @@ namespace store.LogicaDatos.Repositorios
             return await _context.Compras
             .Include(c => c.Articulos)
             .Include(c => c.Cliente)
-            .Include(c => c.Pago)
+            .Include(c => c.Pagos)
             .Include(c => c.Envio)
             .Where(c => c.Cliente.Id == clienteid)
             .ToListAsync();
@@ -51,7 +51,7 @@ namespace store.LogicaDatos.Repositorios
             return await _context.Compras
             .Include(c => c.Articulos)
             .Include(c => c.Cliente)
-            .Include(c => c.Pago)
+            .Include(c => c.Pagos)
             .Include(c => c.Envio)
             .Where(c => c.Fecha >= inicio && c.Fecha <= fin)
             .ToListAsync();
@@ -62,7 +62,7 @@ namespace store.LogicaDatos.Repositorios
             return await _context.Compras
             .Include(c => c.Articulos)
             .Include(c => c.Cliente)
-            .Include(c => c.Pago)
+            .Include(c => c.Pagos)
             .Include(c => c.Envio)
             .FirstOrDefaultAsync(c => c.Guid == compraGuid);
         }
@@ -72,7 +72,7 @@ namespace store.LogicaDatos.Repositorios
             return await _context.Compras
             .Include(c => c.Articulos)
             .Include(c => c.Cliente)
-            .Include(c => c.Pago)
+            .Include(c => c.Pagos)
             .Include(c => c.Envio)
             .FirstOrDefaultAsync(c => c.Id == id);
         }
@@ -82,7 +82,7 @@ namespace store.LogicaDatos.Repositorios
             return await _context.Compras
             .Include(c => c.Articulos)
             .Include(c => c.Cliente)
-            .Include(c => c.Pago)
+            .Include(c => c.Pagos)
             .Include(c => c.Envio)
             .Where(c => c.EstadoCompra.ToString() == estado)
             .ToListAsync();

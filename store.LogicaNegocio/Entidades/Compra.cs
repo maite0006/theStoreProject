@@ -15,19 +15,17 @@ namespace store.LogicaNegocio.Entidades
         public Estado EstadoCompra { get; set; } = Estado.Pendiente;
         public enum Estado
         {
-            Pendiente,      // creada pero aún sin pagar
-            Pagada,         // pago confirmado
-            EnPreparacion,  // preparando envío
-            Enviada,
-            Completada,
+            Creada,
+            Pendiente,      
+            Pagada,          
+            Fallida,
             Cancelada
         }
         public ICollection<Articulo> Articulos { get; set; } = new List<Articulo>();
         public int ClienteId { get; set; }
         public Cliente Cliente { get; set; }
-        public Pago Pago { get; set; }
         public Envio Envio { get; set; }
-
+        public ICollection<Pago> Pagos { get; set; } = new List<Pago>();
         public Compra() { }
        
     }

@@ -8,6 +8,9 @@ namespace store.DTOs.DTOs.Compra
 {
     public class EnvioDTO
     {
+        public string Cliente {  get; set; }
+        public int Compra { get; set; }
+        public string Estado { get; set; }
         public string Direccion { get; set; }
         public string Ciudad { get; set; }
         public string Pais { get; set; }

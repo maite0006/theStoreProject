@@ -21,8 +21,12 @@ namespace store.LogicaAplicacion.Mappers
                 ArticuloCarritoDTO art = ArticuloMapper.FromArticulo(item);
                 ret.Articulos.Add(art);
             }
-            if (compra.Pago != null)
-                ret.Pago=PagoMapper.FromPago(compra.Pago);
+            if (compra.Pagos.Any())
+                foreach (var p in compra.Pagos)
+                {
+                    ret.Pagos.Add(PagoMapper.FromPago(p));
+                    
+                }
 
             if (compra.Envio != null)
                   ret.Envio=EnvioMapper.FromEnvio(compra.Envio);

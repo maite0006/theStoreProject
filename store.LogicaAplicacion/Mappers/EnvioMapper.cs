@@ -24,6 +24,9 @@ namespace store.LogicaAplicacion.Mappers
         public static EnvioDTO FromEnvio(Envio envio)
         {
             EnvioDTO dto = new EnvioDTO();
+            dto.Cliente=envio.Compra.Cliente.Email;
+            dto.Compra=envio.CompraId;
+            dto.Estado=envio.Compra.EstadoCompra.ToString();
             dto.MetodoEnvio=envio.MetodoEnvio;
             dto.Pais=envio.Pais;
             dto.Direccion=envio.Direccion;
@@ -31,5 +34,7 @@ namespace store.LogicaAplicacion.Mappers
             dto.CodigoPostal=envio.CodigoPostal;
             return dto;
         }
+
+       
     }
 }

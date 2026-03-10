@@ -13,7 +13,7 @@ namespace store.DTOs.DTOs.Compra
         public List<ArticuloCarritoDTO> Articulos { get; set; } = new();
         public decimal Total { get; set; }
         public string EstadoCompra { get; set; }
-        public PagoDTO? Pago { get; set; }
+        public List<PagoDTO>? Pagos { get; set; }
         public EnvioDTO? Envio { get; set; }
 
     }

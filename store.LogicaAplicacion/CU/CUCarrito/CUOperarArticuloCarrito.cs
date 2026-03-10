@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using store.DTOs.DTOs.Articulo;
 using store.DTOs.DTOs.Producto;
-using store.LogicaAplicacion.ICU.ICUArticulos;
 using store.LogicaAplicacion.ICU.ICUCarrito;
 using store.LogicaDatos;
 using store.LogicaNegocio.CustomExceptions;
@@ -19,18 +18,15 @@ namespace store.LogicaAplicacion.CU.CUCarrito
     public class CUOperarArticuloCarrito : ICUOperarArticuloCarrito
     {
         private readonly IRepositorioPrecompras _repositorioPrecompras;
-        private readonly ICUEditarCantArt _cuEditarCantArt;
-        private readonly ICUAltaArticulo _cuAltaArticulo;
+      
         private readonly eStoreDBContext _context;
 
-        public CUOperarArticuloCarrito(IRepositorioPrecompras repositorioPrecompras, ICUEditarCantArt cUEditarCantArt, ICUAltaArticulo cUAltaArticulo, eStoreDBContext store)
+        public CUOperarArticuloCarrito(IRepositorioPrecompras repositorioPrecompras, eStoreDBContext store)
         {
             _repositorioPrecompras = repositorioPrecompras;
-            _cuEditarCantArt = cUEditarCantArt;
-            _cuAltaArticulo = cUAltaArticulo;
             _context = store;
         }
-        public async Task Ejecutar(ArtDTO dto)
+        public async Task<bool> Ejecutar(ArtDTO dto)
         {
             Producto producto = await _context.Productos.FirstOrDefaultAsync(p => p.Id == dto.productoId);
             if (producto == null)
@@ -50,6 +46,7 @@ namespace store.LogicaAplicacion.CU.CUCarrito
                  dto.cantidad      
              );
             await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace store.LogicaAplicacion.CU.CUProductos
 {
-    public class CUQuitarProdDestacado : ICUQuitarProductoDestacado
+    public class CUQuitarProductoDestacado : ICUQuitarProductoDestacado
 
     {
         private readonly IRepositorioProductos _repo;
 
-        public CUQuitarProdDestacado(IRepositorioProductos repo)
+        public CUQuitarProductoDestacado(IRepositorioProductos repo)
         {
             _repo = repo;
         }

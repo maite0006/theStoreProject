@@ -20,7 +20,7 @@ namespace store.LogicaNegocio.Entidades
         {
             ClienteId = clienteId;
         }
-        public void ActualizarCantidadArticulo(Producto producto, int cantidadDelta)
+        public void ActualizarCantidadArticulo(Producto producto, int cantidadaAgregar)
         {
             if (!producto.Activo)
                 throw new ErrorFlujoArticulo("El producto no está activo.");
@@ -29,26 +29,23 @@ namespace store.LogicaNegocio.Entidades
                 .FirstOrDefault(a => a.ProductoId == producto.Id);
             if (articulo == null)
             {
-                if (cantidadDelta <= 0)
+                if (cantidadaAgregar <= 0)
                     throw new ErrorFlujoArticulo(
                         "No se puede quitar un artículo que no existe en el carrito."
                     );
 
-                if (cantidadDelta > producto.Stock)
-                    throw new CantidadArticuloInvalida(
-                        "No hay stock suficiente para agregar el artículo."
-                    );
+                
                 Articulo nuevo = new Articulo();
                 nuevo.ProductoId = producto.Id;
                 nuevo.Producto= producto;
-                nuevo.Cantidad = cantidadDelta;
+                nuevo.Cantidad = cantidadaAgregar;
                 nuevo.PrecioUnitario = producto.Precio;
                 Articulos.Add(nuevo);
 
                 CalcularTotal();
                 return;
             }
-            int nuevaCantidad = articulo.Cantidad + cantidadDelta;
+            int nuevaCantidad = articulo.Cantidad + cantidadaAgregar;
 
             if (nuevaCantidad > producto.Stock)
                 throw new CantidadArticuloInvalida(
@@ -80,24 +77,17 @@ namespace store.LogicaNegocio.Entidades
            
         public decimal CalcularTotal()
         {
-            try
+            decimal total = 0;
+            foreach (var art in Articulos)
             {
-                decimal total = 0;
-                foreach (var art in Articulos)
+                if (art.EvaluarDisponibilidad(art.Producto.Stock, art.Producto.Activo))
                 {
-                    if (art.EvaluarDisponibilidad(art.Producto.Stock, art.Producto.Activo))
-                    {
-                        total += art.Cantidad * art.PrecioUnitario;
-                    }
+                    total += art.Cantidad * art.PrecioUnitario;
                 }
-                return total;
             }
-            catch
-            {
-                return 0;
-            }
-
-
+            Total = total;
+            return total;
+            
         }
 
         public void Vaciar()

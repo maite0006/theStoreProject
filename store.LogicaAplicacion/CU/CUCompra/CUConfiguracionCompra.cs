@@ -35,7 +35,7 @@ namespace store.LogicaAplicacion.CU.CUCompra
             envio.CompraId = compraid;
 
             c.Envio = envio;
-            c.Pago = pago;
+            c.Pagos.Add(pago);
 
             _dbContext.Pagos.Add(pago);
             _dbContext.Envios.Add(envio);

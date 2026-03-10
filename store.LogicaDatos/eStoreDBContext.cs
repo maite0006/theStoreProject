@@ -56,11 +56,7 @@ namespace store.LogicaDatos
                 .UsingEntity<Dictionary<string, object>>(
                     "ProductoCategory");
 
-             modelBuilder.Entity<Pago>()
-                .HasOne(p => p.Compra)
-                .WithOne(c => c.Pago)  // 
-                .HasForeignKey<Pago>(p => p.CompraId);
-
+           
             // Configuración para las relaciones uno a muchos entre Cliente y Compra
             modelBuilder.Entity<Cliente>()
                 .HasMany(c => c.HistorialCompras)
@@ -107,11 +103,11 @@ namespace store.LogicaDatos
                 .WithMany(p => p.Imagenes)
                 .HasForeignKey(i => i.ProductoId);
             //relaciones compra pago y compra envio
-            modelBuilder.Entity<Compra>()
-                .HasOne(c => c.Pago)
-                .WithOne(p => p.Compra)
-                .HasForeignKey<Pago>(p => p.CompraId)
-                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Pago>()
+                 .HasOne(p => p.Compra)
+                 .WithMany(c => c.Pagos)
+                 .HasForeignKey(p => p.CompraId)
+                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Compra>()
                 .HasOne(c => c.Envio)

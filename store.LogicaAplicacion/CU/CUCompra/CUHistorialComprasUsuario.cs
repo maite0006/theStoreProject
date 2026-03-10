@@ -12,10 +12,10 @@ using System.Threading.Tasks;
 
 namespace store.LogicaAplicacion.CU.CUCompra
 {
-    public class CUVerHistorialUsuario : ICUVerHistorialUsuario
+    public class CUHistorialComprasUsuario : ICUHistorialComprasUsuario
     {
         private readonly IRepositorioCompras _repositorioCompras;
-        public CUVerHistorialUsuario(IRepositorioCompras repositorioCompras)
+        public CUHistorialComprasUsuario(IRepositorioCompras repositorioCompras)
         {
             _repositorioCompras=repositorioCompras;
         }

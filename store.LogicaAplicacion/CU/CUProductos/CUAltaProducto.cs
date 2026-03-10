@@ -15,12 +15,12 @@ using System.Threading.Tasks;
 
 namespace store.LogicaAplicacion.CU.CUProductos
 {
-    public class CUAltaProd : ICUAltaProd
+    public class CUAltaProducto : ICUAltaProducto
     {
         private readonly IRepositorioProductos _repoProductos;
         private readonly IRepositorioCategorias _repoCategorias;
         private readonly IRepositorioUsuarios _repositorioUsuarios;
-        public CUAltaProd(IRepositorioProductos repoProductos, IRepositorioCategorias repoCategorias,IRepositorioUsuarios repositorioUsuarios)
+        public CUAltaProducto(IRepositorioProductos repoProductos, IRepositorioCategorias repoCategorias,IRepositorioUsuarios repositorioUsuarios)
         {
             _repoProductos = repoProductos;
             _repoCategorias = repoCategorias;

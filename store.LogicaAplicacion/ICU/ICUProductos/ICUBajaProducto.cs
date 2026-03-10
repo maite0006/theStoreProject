@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace store.LogicaAplicacion.ICU.ICUProductos
 {
-    public interface ICUBajaProd
+    public interface ICUBajaProducto
     {
-        Task<bool> BajaProductoAsync(Guid productoGuid);
         Task<bool> EliminarProd(Guid productoGuid, int admId);
     }
 }

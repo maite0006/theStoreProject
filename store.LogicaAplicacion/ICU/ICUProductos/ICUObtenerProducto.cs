@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace store.LogicaAplicacion.ICU.ICUProductos
 {
-    public interface ICUObtenerProd
+    public interface ICUObtenerProducto
     {
          Task<ProdDTO> ObtenerProdbyID(int id);
         

@@ -14,14 +14,17 @@ namespace store.LogicaAplicacion.Mappers
         {
             Pago pago = new Pago();
             pago.Monto= dto.Monto;
-            pago.Metodo = dto.Metodo;
+            if(dto.Metodo.ToLower() == "mercadopago") 
+                pago.Metodo = MetodoPago.MercadoPago;
+            else if(dto.Metodo.ToLower() == "transferencia")
+                pago.Metodo = MetodoPago.Transferencia;
             return pago;
         }
         public static PagoDTO FromPago(Pago pago)
         {
             PagoDTO dto = new PagoDTO();
             dto.Monto = pago.Monto;
-            dto.Metodo = pago.Metodo;
+            dto.Metodo = pago.Metodo.ToString();
             dto.estado=pago.Estado.ToString();
             if(pago.Fecha!=null)
                 dto.fechaPago=pago.Fecha;

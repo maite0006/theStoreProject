@@ -2,16 +2,17 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using store.LogicaAplicacion.CU.CUArticulos;
 using store.LogicaAplicacion.CU.CUCarrito;
 using store.LogicaAplicacion.CU.CUCategory;
 using store.LogicaAplicacion.CU.CUCompra;
+using store.LogicaAplicacion.CU.CUCompra.CUEnvio;
+using store.LogicaAplicacion.CU.CUCompra.CUPagos;
 using store.LogicaAplicacion.CU.CUProductos;
 using store.LogicaAplicacion.CU.CUUsuarios;
-using store.LogicaAplicacion.ICU.ICUArticulos;
 using store.LogicaAplicacion.ICU.ICUCarrito;
 using store.LogicaAplicacion.ICU.ICUCategory;
 using store.LogicaAplicacion.ICU.ICUCompra;
+using store.LogicaAplicacion.ICU.ICUCompra.ICUEnvio;
 using store.LogicaAplicacion.ICU.ICUProductos;
 using store.LogicaAplicacion.ICU.ICUUsuarios;
 using store.LogicaDatos;
@@ -47,13 +48,14 @@ builder.Services.AddScoped<ICUAgregarFavorito, CUAgregarFavorito>();
 builder.Services.AddScoped<ICUEliminarFavorito, CUEliminarFavorito>();
 builder.Services.AddScoped<ICUListarFavoritos, CUListarFavoritos>();
 // Productos
-builder.Services.AddScoped<ICUAltaProd, CUAltaProd>();
-builder.Services.AddScoped<ICUBajaProd,CUBajaProd>();
-builder.Services.AddScoped<ICUListarProds, CUListarProds>();
-builder.Services.AddScoped<ICUObtenerProd, CUObtenerProd>();
+builder.Services.AddScoped<ICUAltaProducto, CUAltaProducto>();
+builder.Services.AddScoped<ICUBajaProducto,CUBajaProducto>();
+builder.Services.AddScoped<ICUListarProductos, CUListarProductos>();
+builder.Services.AddScoped<ICUObtenerProducto, CUObtenerProducto>();
 builder.Services.AddScoped<ICUListarProdDestacados, CUListarProductosDestacados>();
 builder.Services.AddScoped<ICUMarcarProductoDestacado, CUMarcarProductoDestacado>();
-builder.Services.AddScoped<ICUQuitarProductoDestacado, CUQuitarProdDestacado>();
+builder.Services.AddScoped<ICUQuitarProductoDestacado, CUQuitarProductoDestacado>();
+builder.Services.AddScoped<ICUGestionarEstadoProducto, CUGestionarEstadoProducto>();
 // Categorias
 builder.Services.AddScoped<ICUListarCategorias, CUListarCategorias>();
 builder.Services.AddScoped<ICUAltaCategoria, CUAltaCategoria>();
@@ -62,13 +64,13 @@ builder.Services.AddScoped<ICUBajaCategoria, CUBajaCategoria>();
 builder.Services.AddScoped<store.LogicaAplicacion.ICU.ICUCarrito.ICUOperarArticuloCarrito, CUOperarArticuloCarrito>();
 builder.Services.AddScoped<ICUCerrarPrecompra, CUCerrarPrecompra>();
 builder.Services.AddScoped<ICUVerCarrito, CUVerCarrito>();
-builder.Services.AddScoped<ICUVaciarCarrito, ICUVaciarCarrito>();
+builder.Services.AddScoped<ICUVaciarCarrito, CUVaciarCarrito>();
 //Compra
 builder.Services.AddScoped<ICUActualizarEstadoEnvio, CUActualizarEstadoEnvio>();
 builder.Services.AddScoped<ICUConfigurarCompra, CUConfiguracionCompra>();
 builder.Services.AddScoped<ICUConfirmarPago, CUConfirmarPago>();
 builder.Services.AddScoped<ICUVerDetalle, CUVerDetalle>();
-builder.Services.AddScoped<ICUVerHistorialUsuario, CUVerHistorialUsuario>();
+builder.Services.AddScoped<ICUHistorialComprasUsuario, CUHistorialComprasUsuario>();
 builder.Services.AddScoped<ICUHistorialGeneralCompras, CUHistorialGeneralCompras>();
 
 

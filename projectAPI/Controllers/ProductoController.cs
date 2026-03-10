@@ -15,15 +15,16 @@ namespace projectAPI.Controllers
     [Authorize]
     public class ProductoController : ControllerBase
     {
-        private readonly ICUObtenerProd _cUObtenerProd;
-        private readonly ICUListarProds _cUListarProds;
-        private readonly ICUBajaProd _cUBajaProd;
-        private readonly ICUAltaProd _cUAltaProd;
+        private readonly ICUObtenerProducto _cUObtenerProd;
+        private readonly ICUListarProductos _cUListarProds;
+        private readonly ICUBajaProducto _cUBajaProd;
+        private readonly ICUAltaProducto _cUAltaProd;
         private readonly ICUMarcarProductoDestacado _cuMarcarProductoDestacado;
         private readonly ICUQuitarProductoDestacado _cuQuitarProductoDestacado;
         private readonly ICUListarProdDestacados _cuListarProdDestacados;
+        private readonly ICUGestionarEstadoProducto _cuGestionarEstadoProducto;
 
-        public ProductoController(ICUAltaProd cuAltaprod, ICUBajaProd cuBajaProd, ICUListarProds cuListarProds, ICUObtenerProd cuObtenerProd, ICUMarcarProductoDestacado cuMarcarProductoDestacado, ICUQuitarProductoDestacado cuQuitarProductoDestacado, ICUListarProdDestacados cuListarProdDestacados)
+        public ProductoController(ICUAltaProducto cuAltaprod, ICUBajaProducto cuBajaProd, ICUListarProductos cuListarProds, ICUObtenerProducto cuObtenerProd, ICUMarcarProductoDestacado cuMarcarProductoDestacado, ICUQuitarProductoDestacado cuQuitarProductoDestacado, ICUListarProdDestacados cuListarProdDestacados, ICUGestionarEstadoProducto cuGestionarEstadoProducto)
         {
             _cUAltaProd = cuAltaprod;
             _cUBajaProd = cuBajaProd;
@@ -32,6 +33,7 @@ namespace projectAPI.Controllers
             _cuMarcarProductoDestacado = cuMarcarProductoDestacado;
             _cuQuitarProductoDestacado = cuQuitarProductoDestacado;
             _cuListarProdDestacados = cuListarProdDestacados;
+            _cuGestionarEstadoProducto=cuGestionarEstadoProducto;
         }
         //Falta obtener prod
 
@@ -63,28 +65,7 @@ namespace projectAPI.Controllers
             }
 
         }
-        [HttpPut("{id:guid}")]
-        [Authorize(Roles = "Administrador")]
-        public async Task<IActionResult> desactivarProd(Guid id)
-        {
-            try
-            {
-                var desactivado = await _cUBajaProd.BajaProductoAsync(id);
-                if(!desactivado)
-                    return BadRequest("Se produjo un error al dar de baja su producto");
-
-                return Ok($"Prod {id} dado de baja con exito");
-            }
-            catch (EntityNotFound ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Error interno: {ex.Message}");
-            }
-
-        }
+        
 
         [HttpPost]
         [Authorize(Roles = "Administrador")]
@@ -232,6 +213,28 @@ namespace projectAPI.Controllers
             return Ok(productos);
         }
 
+        [HttpPut("estado")]
+        [Authorize(Roles = "Adm")]
+        public async Task<IActionResult> CambiarEstadoProducto([FromQuery] Guid ProdGUID,[FromQuery] bool activo)
+        {
+            try
+            {
+                await _cuGestionarEstadoProducto.ejecutar(ProdGUID, activo);
+                return Ok("Estado del producto actualizado.");
+            }
+            catch (EntityNotFound ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (AccionInvalida ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
 
 
     }

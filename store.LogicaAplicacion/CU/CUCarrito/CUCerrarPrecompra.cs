@@ -33,8 +33,8 @@ namespace store.LogicaAplicacion.CU.CUCarrito
             if (precompra == null || precompra.Articulos.Count == 0)
                 throw new EntityNotFound("Precompra", precompraId);
 
-            var articulosValidos = precompra.Articulos
-                .Where(a => a.Producto.Activo && a.Cantidad <= a.Producto.Stock)
+            var articulosValidos = precompra.Articulos.
+                Where(a => a.EvaluarDisponibilidad(a.Producto.Stock, a.Producto.Activo))
                 .ToList();
 
             if (!articulosValidos.Any())
@@ -43,11 +43,16 @@ namespace store.LogicaAplicacion.CU.CUCarrito
             var compra = new Compra
             {
                 ClienteId = precompra.ClienteId,
-                Articulos = articulosValidos,
                 Total = precompra.CalcularTotal(),
                 Fecha = DateTime.Now,
-           
             };
+
+            foreach (var articulo in articulosValidos)
+            {
+                precompra.Articulos.Remove(articulo);
+                articulo.Precompra = null;
+                compra.Articulos.Add(articulo);
+            }
 
             await _repositorioCompras.AddAsync(compra);
             precompra.Articulos.Clear();

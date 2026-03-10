@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace store.LogicaAplicacion.ICU.ICUCompra
+namespace store.LogicaAplicacion.ICU.ICUCompra.ICUEnvio
 {
     public interface ICUActualizarEstadoEnvio
     {

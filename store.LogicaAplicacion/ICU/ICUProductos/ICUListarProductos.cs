@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace store.LogicaAplicacion.ICU.ICUProductos
 {
-    public interface ICUListarProds
+    public interface ICUListarProductos
     {
         Task<ICollection<ProdDTO>> obtenerTodos();
         Task<ICollection<ProdDTO>> obtenerActivos();

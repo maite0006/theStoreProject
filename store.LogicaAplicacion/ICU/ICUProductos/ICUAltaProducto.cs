@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace store.LogicaAplicacion.ICU.ICUProductos
 {
-    public interface ICUAltaProd
+    public interface ICUAltaProducto
     {
         Task<AltaProdOutDTO> AgregarP(AltaProdInDTO dto, int admID);
         Task<AltaProdOutDTO> MapearCatsGuardar(Producto producto, List<int> categorias);

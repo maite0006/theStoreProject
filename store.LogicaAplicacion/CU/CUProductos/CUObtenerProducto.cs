@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace store.LogicaAplicacion.CU.CUProductos
 {
-    public class CUObtenerProd : ICUObtenerProd
+    public class CUObtenerProducto : ICUObtenerProducto
     {
         private readonly IRepositorioProductos _repositorioProductos;
-        public CUObtenerProd(IRepositorioProductos repositorioProductos)
+        public CUObtenerProducto(IRepositorioProductos repositorioProductos)
         {
             _repositorioProductos = repositorioProductos;
         }

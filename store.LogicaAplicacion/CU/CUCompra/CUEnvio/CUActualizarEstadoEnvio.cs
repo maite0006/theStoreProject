@@ -1,4 +1,4 @@
-﻿using store.LogicaAplicacion.ICU.ICUCompra;
+﻿using store.LogicaAplicacion.ICU.ICUCompra.ICUEnvio;
 using store.LogicaNegocio.CustomExceptions;
 using store.LogicaNegocio.CustomExceptions.CompraExceptions;
 using store.LogicaNegocio.Entidades;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace store.LogicaAplicacion.CU.CUCompra
+namespace store.LogicaAplicacion.CU.CUCompra.CUEnvio
 {
     public class CUActualizarEstadoEnvio : ICUActualizarEstadoEnvio
     {
