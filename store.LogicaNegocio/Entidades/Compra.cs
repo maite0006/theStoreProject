@@ -27,6 +27,14 @@ namespace store.LogicaNegocio.Entidades
         public Envio Envio { get; set; }
         public ICollection<Pago> Pagos { get; set; } = new List<Pago>();
         public Compra() { }
-       
+
+        public void MarcarPagada()
+        {
+            if (EstadoCompra == Estado.Pagada)
+                throw new InvalidOperationException("La compra ya está pagada");
+
+            EstadoCompra = Estado.Pagada;
+        }
+
     }
 }

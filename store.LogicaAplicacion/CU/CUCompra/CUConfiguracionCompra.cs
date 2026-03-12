@@ -23,21 +23,17 @@ namespace store.LogicaAplicacion.CU.CUCompra
             _repositorioCompras=repositorioCompras;
             _dbContext = eStore;
         }
-        public async  Task<int> ConfiguraciónCompra(int compraid, PagoDTO dtoPago, EnvioDTO dtoEnvio)
+        public async  Task<int> ConfiguraciónCompra(int compraid,  EnvioDTO dtoEnvio)
         {
             Compra c= await _repositorioCompras.FindByIdAsync(compraid);
             if (c==null)
                 throw new EntityNotFound("Compra", compraid);
-            Pago pago = PagoMapper.FromDTO(dtoPago);
-            pago.CompraId=compraid;
+           
 
             Envio envio= EnvioMapper.FromDTO(dtoEnvio);
             envio.CompraId = compraid;
 
             c.Envio = envio;
-            c.Pagos.Add(pago);
-
-            _dbContext.Pagos.Add(pago);
             _dbContext.Envios.Add(envio);
 
             await _dbContext.SaveChangesAsync();

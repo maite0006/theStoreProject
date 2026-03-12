@@ -58,6 +58,8 @@ namespace store.LogicaDatos.Repositorios
             return await _context.Productos
             .Include(p => p.Categorias)
             .FirstOrDefaultAsync(p => p.Id == id);
+
+          
         }
 
         public async Task<ICollection<Producto>> FindByNameOrDescription(string texto)

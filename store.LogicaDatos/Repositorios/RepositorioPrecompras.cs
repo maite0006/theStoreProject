@@ -62,9 +62,11 @@ namespace store.LogicaDatos.Repositorios
 
         public async Task<Precompra> FindByIdAsync(int id)
         {
-            return await _context.Precompras
-           .Include(pc => pc.Articulos)
-           .FirstOrDefaultAsync(pc => pc.Id == id);
+
+             return await _context.Precompras
+            .Include(p => p.Articulos)
+            .ThenInclude(a => a.Producto)
+            .FirstOrDefaultAsync(p => p.Id == id);
         }
         public async Task<bool> RemoveArticulo(int articuloId)
         {

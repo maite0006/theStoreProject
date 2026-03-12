@@ -21,3 +21,4 @@ namespace store.LogicaDatos
             return new eStoreDBContext(optionsBuilder.Options);
         }
     }
+}

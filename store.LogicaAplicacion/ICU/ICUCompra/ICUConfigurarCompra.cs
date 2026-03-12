@@ -12,6 +12,6 @@ namespace store.LogicaAplicacion.ICU.ICUCompra
 {
     public interface ICUConfigurarCompra
     {
-        Task<int> ConfiguraciónCompra(int compraId, PagoDTO dtoPago, EnvioDTO dtoEnvio);
+        Task<int> ConfiguraciónCompra(int compraId,  EnvioDTO dtoEnvio);
     }
 }

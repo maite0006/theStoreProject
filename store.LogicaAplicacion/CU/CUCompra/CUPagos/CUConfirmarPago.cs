@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using store.LogicaAplicacion.ICU.ICUCompra;
+using store.LogicaAplicacion.ICU.ICUCompra.ICUPagos;
 using store.LogicaDatos;
 using store.LogicaNegocio.CustomExceptions;
 using store.LogicaNegocio.CustomExceptions.ProdExceptions;
@@ -22,52 +22,20 @@ namespace store.LogicaAplicacion.CU.CUCompra.CUPagos
             _repositorioCompras= repositorioCompras;
             _context= context;
         }
-        public async Task<bool> ConfirmarPago(int compraId)
+        public async Task ConfirmarPago(int pagoId)
         {
-            using var transaction = await _context.Database.BeginTransactionAsync();
-
-            Compra compra = await _repositorioCompras.FindByIdAsync(compraId);
-
-            if (compra == null)
-                throw new EntityNotFound("Compra", compraId);
-
-            var pago = compra.Pagos
-                .FirstOrDefault(p => p.Estado == EstadoPago.Pendiente);
+            Pago pago = await _repoPagos.FindByIdAsync(pagoId);
 
             if (pago == null)
-                throw new InvalidOperationException("No hay pagos pendientes.");
+                throw new EntityNotFound("Pago", pagoId);
 
-            foreach (var art in compra.Articulos)
-            {
-                if (art.Producto.Stock < art.Cantidad)
-                    throw new StockInsuficiente($"Stock insuficiente para {art.Producto.Nombre}");
-            }
+            pago.Confirmar();
 
-            foreach (var art in compra.Articulos)
-                art.Producto.Stock -= art.Cantidad;
+            Compra compra = await _repoCompras.FindByIdAsync(pago.CompraId);
 
-            bool pagoOk = SimulacionMP(pago);
+            compra.MarcarPagada();
 
-            if (pagoOk)
-            {
-                pago.Estado = EstadoPago.Aprobado;
-                compra.EstadoCompra = Compra.Estado.Pagada;
-            }
-            else
-            {
-                pago.Estado = EstadoPago.Rechazado;
-                compra.EstadoCompra = Compra.Estado.Pendiente;
-
-                foreach (var art in compra.Articulos)
-                    art.Producto.Stock += art.Cantidad;
-            }
-
-            compra.Fecha = DateTime.Now;
-
-            await _context.SaveChangesAsync();
-            await transaction.CommitAsync();
-
-            return pagoOk;
+            await _dbContext.SaveChangesAsync();
         }
 
         public  bool SimulacionMP(Pago p)

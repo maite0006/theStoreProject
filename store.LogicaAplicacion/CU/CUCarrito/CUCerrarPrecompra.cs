@@ -34,7 +34,7 @@ namespace store.LogicaAplicacion.CU.CUCarrito
                 throw new EntityNotFound("Precompra", precompraId);
 
             var articulosValidos = precompra.Articulos.
-                Where(a => a.EvaluarDisponibilidad(a.Producto.Stock, a.Producto.Activo))
+                Where(a =>  a.Producto != null && a.EvaluarDisponibilidad(a.Producto.Stock, a.Producto.Activo))
                 .ToList();
 
             if (!articulosValidos.Any())

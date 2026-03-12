@@ -7,13 +7,8 @@ namespace store.DTOs.DTOs.Compra
 {
     public class PagoDTO
     {
-        public decimal Monto { get; set; }             // Total a pagar
-        public String Metodo { get; set; }         //  MercadoPago, Transferencia
-        public string? NumeroTarjeta { get; set; }     // Opcional: si se simula tarjeta
-        public string? CodigoSeguridad { get; set; }  // Opcional
-        public string? Expiracion { get; set; }
-        public DateTime? fechaPago { get; set; }
-        public string? estado { get; set; }
+        public decimal Monto { get; set; }
+        public string Metodo { get; set; }
     }
-    
+
 }

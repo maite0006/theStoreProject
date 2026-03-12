@@ -13,6 +13,7 @@ using store.LogicaAplicacion.ICU.ICUCarrito;
 using store.LogicaAplicacion.ICU.ICUCategory;
 using store.LogicaAplicacion.ICU.ICUCompra;
 using store.LogicaAplicacion.ICU.ICUCompra.ICUEnvio;
+using store.LogicaAplicacion.ICU.ICUCompra.ICUPagos;
 using store.LogicaAplicacion.ICU.ICUProductos;
 using store.LogicaAplicacion.ICU.ICUUsuarios;
 using store.LogicaDatos;
