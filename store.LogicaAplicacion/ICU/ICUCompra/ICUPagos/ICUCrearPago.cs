@@ -9,6 +9,6 @@ namespace store.LogicaAplicacion.ICU.ICUCompra.ICUPagos
 {
     public interface ICUCrearPago
     {
-        Task<int> Ejecutar(int compraId, PagoDTO pago);
+        Task<String> Ejecutar(int compraId, PagoDTO pago);
     }
 }

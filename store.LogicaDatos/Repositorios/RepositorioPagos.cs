@@ -66,3 +66,4 @@ namespace store.LogicaDatos.Repositorios
                 .ToListAsync();
         }
     }
+}

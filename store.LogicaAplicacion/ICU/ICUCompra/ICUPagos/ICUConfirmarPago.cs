@@ -9,7 +9,7 @@ namespace store.LogicaAplicacion.ICU.ICUCompra.ICUPagos
 {
     public interface ICUConfirmarPago
     {
-        Task<bool> ConfirmarPago(int pagoId);
-        bool SimulacionMP(Pago p);
+        Task ConfirmarPago(int pagoId);
+      
     }
 }

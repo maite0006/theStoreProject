@@ -1,3 +1,4 @@
+using MercadoPago.Config;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -20,6 +21,7 @@ using store.LogicaDatos;
 using store.LogicaDatos.Repositorios;
 using store.LogicaNegocio.IRepositorios;
 using store.Utilidades;
+using MercadoPago.Config;
 using System;
 using System.Text;
 
@@ -40,6 +42,7 @@ builder.Services.AddScoped<IRepositorioCategorias,RepositorioCategorias>();
 builder.Services.AddScoped<IRepositorioCompras,RepositorioCompras>();
 builder.Services.AddScoped<IRepositorioPrecompras, RepositorioPrecompras>();
 builder.Services.AddScoped<IRepositorioReseñas, RepositorioReseñas>();
+builder.Services.AddScoped<IRepositorioPagos, RepositorioPagos>();
 
 //CU injections
 // Usuario
@@ -69,12 +72,19 @@ builder.Services.AddScoped<ICUVaciarCarrito, CUVaciarCarrito>();
 //Compra
 builder.Services.AddScoped<ICUActualizarEstadoEnvio, CUActualizarEstadoEnvio>();
 builder.Services.AddScoped<ICUConfigurarCompra, CUConfiguracionCompra>();
-builder.Services.AddScoped<ICUConfirmarPago, CUConfirmarPago>();
 builder.Services.AddScoped<ICUVerDetalle, CUVerDetalle>();
 builder.Services.AddScoped<ICUHistorialComprasUsuario, CUHistorialComprasUsuario>();
 builder.Services.AddScoped<ICUHistorialGeneralCompras, CUHistorialGeneralCompras>();
 
+//Pago
+builder.Services.AddScoped<ICUCrearPago, CUCrearPago>();
+builder.Services.AddScoped<ICUConfirmarPago, CUConfirmarPago>();
 
+
+//Configuración de Mercado Pago
+
+var mpToken = builder.Configuration["MercadoPago:AccessToken"];
+MercadoPagoConfig.AccessToken = mpToken;
 
 
 

@@ -11,13 +11,12 @@ namespace projectAPI.Controllers
     public class ComprasController : ControllerBase
     {
         private readonly ICUConfigurarCompra _configurarCompra;// inyeccion de ambos pendiente
-        private readonly ICUCrearPago _crearPago;
+     
 
-        public ComprasController(ICUConfigurarCompra configurarCompra,
-                                 ICUCrearPago crearPago)
+        public ComprasController(ICUConfigurarCompra configurarCompra)
         {
             _configurarCompra = configurarCompra;
-            _crearPago = crearPago;
+            
         }
 
         [HttpPost("{compraId}/configurar")]
@@ -27,15 +26,6 @@ namespace projectAPI.Controllers
             return Ok(new { compraId = id });
         }
 
-        [HttpPost("{compraId}/pagos")]
-        public async Task<IActionResult> CrearPago(int compraId, [FromBody] PagoDTO dto)
-        {
-            int pagoId = await _crearPago.Ejecutar(compraId, dto);
-
-            return Ok(new
-            {
-                pagoId = pagoId
-            });
-        }
+       
     }
 }

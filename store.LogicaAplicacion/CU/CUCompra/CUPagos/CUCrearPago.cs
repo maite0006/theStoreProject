@@ -6,6 +6,8 @@ using store.LogicaDatos;
 using store.LogicaNegocio.CustomExceptions;
 using store.LogicaNegocio.Entidades;
 using store.LogicaNegocio.IRepositorios;
+using MercadoPago.Client.Preference;
+using MercadoPago.Resource.Preference;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +20,13 @@ namespace store.LogicaAplicacion.CU.CUCompra.CUPagos
     {
         private readonly IRepositorioCompras _repositorioCompras;
         private readonly eStoreDBContext _context;
-
-        public CUCrearPago(IRepositorioCompras repositorioCompras, eStoreDBContext context) {
+        private readonly IRepositorioPagos _repoPagos;
+        public CUCrearPago(IRepositorioCompras repositorioCompras, eStoreDBContext context, IRepositorioPagos pagos) {
             _repositorioCompras=repositorioCompras;
             _context=context;
+            _repoPagos = pagos;
         }
-        public async Task<int> Ejecutar(int compraId, PagoDTO dto)
+        public async Task<String> Ejecutar(int compraId, PagoDTO dto)
         {
             Compra compra = await _repositorioCompras.FindByIdAsync(compraId);
 
@@ -43,8 +46,30 @@ namespace store.LogicaAplicacion.CU.CUCompra.CUPagos
 
             await _context.SaveChangesAsync();
 
-            return pago.Id;
+            var preferenceRequest = new PreferenceRequest
+            {
+                Items = new List<PreferenceItemRequest>
+            {
+                new PreferenceItemRequest
+                {
+                    Title = "Compra eStore",
+                    Quantity = 1,
+                    CurrencyId = "UYU",
+                    UnitPrice = compra.Total
+                }
+            },
 
+               
+                ExternalReference = pago.Id.ToString()
+            };
+
+            var client = new PreferenceClient();
+            Preference preference = await client.CreateAsync(preferenceRequest);
+
+            pago.GatewayPaymentId = preference.Id;
+
+            await _context.SaveChangesAsync();
+            return preference.InitPoint;
         }
     }
 }

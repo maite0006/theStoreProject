@@ -16,10 +16,12 @@ namespace store.LogicaAplicacion.CU.CUCompra.CUPagos
     public class CUConfirmarPago : ICUConfirmarPago
     {
         private readonly IRepositorioCompras _repositorioCompras;
+        private readonly IRepositorioPagos _repoPagos;
         private readonly eStoreDBContext _context;
-        public CUConfirmarPago(IRepositorioCompras repositorioCompras, eStoreDBContext context)
+        public CUConfirmarPago(IRepositorioCompras repositorioCompras, eStoreDBContext context, IRepositorioPagos repoPagos)
         {
             _repositorioCompras= repositorioCompras;
+            _repoPagos = repoPagos;
             _context= context;
         }
         public async Task ConfirmarPago(int pagoId)
@@ -31,11 +33,11 @@ namespace store.LogicaAplicacion.CU.CUCompra.CUPagos
 
             pago.Confirmar();
 
-            Compra compra = await _repoCompras.FindByIdAsync(pago.CompraId);
+            Compra compra = await _repositorioCompras.FindByIdAsync(pago.CompraId);
 
             compra.MarcarPagada();
 
-            await _dbContext.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public  bool SimulacionMP(Pago p)
