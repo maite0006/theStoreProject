@@ -10,10 +10,10 @@ namespace store.LogicaNegocio.Entidades
     public class Precompra
     {
         public int Id { get; set; }
-        public decimal Total { get; set; }
+        public decimal Total => CalcularTotal();
         public int ClienteId { get; set; }
         public Cliente Cliente { get; set; }
-        public ICollection<Articulo> Articulos { get; set; } = new List<Articulo>();
+        public ICollection<ArticuloCarrito> Articulos { get; set; } = new List<ArticuloCarrito>();
 
         public Precompra() { }
         public Precompra(int clienteId)
@@ -25,7 +25,7 @@ namespace store.LogicaNegocio.Entidades
             if (!producto.Activo)
                 throw new ErrorFlujoArticulo("El producto no está activo.");
 
-            Articulo articulo = Articulos
+            ArticuloCarrito articulo = Articulos
                 .FirstOrDefault(a => a.ProductoId == producto.Id);
             if (articulo == null)
             {
@@ -35,14 +35,12 @@ namespace store.LogicaNegocio.Entidades
                     );
 
                 
-                Articulo nuevo = new Articulo();
+                ArticuloCarrito nuevo = new ArticuloCarrito();
                 nuevo.ProductoId = producto.Id;
                 nuevo.Producto= producto;
                 nuevo.Cantidad = cantidadaAgregar;
                 nuevo.PrecioUnitario = producto.Precio;
                 Articulos.Add(nuevo);
-
-                CalcularTotal();
                 return;
             }
             int nuevaCantidad = articulo.Cantidad + cantidadaAgregar;
@@ -70,7 +68,6 @@ namespace store.LogicaNegocio.Entidades
             if (articulo != null)
             {
                 Articulos.Remove(articulo);
-                CalcularTotal();
             }
         }
         
@@ -85,7 +82,6 @@ namespace store.LogicaNegocio.Entidades
                     total += art.Cantidad * art.PrecioUnitario;
                 }
             }
-            Total = total;
             return total;
             
         }

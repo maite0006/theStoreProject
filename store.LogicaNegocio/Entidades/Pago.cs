@@ -29,9 +29,19 @@ namespace store.LogicaNegocio.Entidades
         {
             if (Estado == EstadoPago.Aprobado)
                 throw new InvalidOperationException("El pago ya fue confirmado");
+            if (Estado == EstadoPago.Rechazado)
+                throw new InvalidOperationException("No se puede confirmar un pago rechazado");
+
 
             Estado = EstadoPago.Aprobado;
             FechaPago = DateTime.Now;
+        }
+        public void Rechazar()
+        {
+            if (Estado == EstadoPago.Aprobado)
+                throw new InvalidOperationException("No se puede rechazar un pago aprobado");
+
+            Estado = EstadoPago.Rechazado;
         }
     }
 

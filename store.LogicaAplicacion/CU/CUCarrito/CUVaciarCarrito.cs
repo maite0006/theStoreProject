@@ -22,20 +22,14 @@ namespace store.LogicaAplicacion.CU.CUCarrito
 
         public async Task Vaciar(int usuarioId)
         {
-            // 1. obtener carrito activo del usuario
+          
             Precompra carrito = await _repoCarrito.FindByCliente(usuarioId);
 
             if (carrito == null)
                 throw new EntityNotFound("Carrito", usuarioId);
-
-            // 2. regla de dominio
             if (!carrito.Articulos.Any())
                 throw new ErrorFlujoArticulo("El carrito ya está vacío");
-
-            // 3. operación de dominio
             carrito.Vaciar();
-
-            // 4. persistencia
             await _repoCarrito.UpdateAsync(carrito);
         }
     }

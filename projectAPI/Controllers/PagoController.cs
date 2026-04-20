@@ -1,41 +1,72 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using store.DTOs.DTOs.Compra;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using store.DTOs.Pago;
 using store.LogicaAplicacion.CU.CUCompra.CUPagos;
 using store.LogicaAplicacion.ICU.ICUCompra.ICUPagos;
 using store.LogicaNegocio.CustomExceptions;
+using System.Security.Claims;
 
 namespace projectAPI.Controllers
 {
     [ApiController]
     [Route("api/pagos")]
+    [Authorize(Roles = "Cliente")]
     public class PagosController : ControllerBase
     {
-        private readonly ICUConfirmarPago _confirmarPago;
+        private readonly ICUConfirmarPagoWebhook _confirmarPago;
         private readonly ICUCrearPago _crearPago;
 
-        public PagosController(ICUConfirmarPago confirmarPago, ICUCrearPago crearPago)
+        public PagosController(ICUConfirmarPagoWebhook confirmarPago, ICUCrearPago crearPago)
         {
             _confirmarPago = confirmarPago;
             _crearPago = crearPago;
+        }
+        private int GetUserId()
+        {
+            var idS = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(idS))
+                throw new UnauthorizedAccessException("Debe autenticarse.");
+
+            return Convert.ToInt32(idS);
         }
 
         [HttpPost("{pagoId}/confirmar")]
         public async Task<IActionResult> ConfirmarPago(int pagoId)
         {
-            await _confirmarPago.ConfirmarPago(pagoId);
 
-            return Ok(new
+            try
             {
-                mensaje = "Pago confirmado"
-            });
+                int userId = GetUserId();
+                await _confirmarPago.ConfirmarPagoWH(pagoId);
+
+                return Ok(new { mensaje = "Pago confirmado" });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Forbid();
+            }
+            catch (EntityNotFound ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
         }
         [HttpPost("{compraId}/pagos")]
-        public async Task<IActionResult> CrearPago(int compraId, [FromBody] PagoDTO dto)
+        public async Task<IActionResult> CrearPago(int compraId, [FromBody] CrearPagoDTO dto)
         {
 
             try
             {
-                var url = await _crearPago.Ejecutar(compraId, dto);
+                int userId = GetUserId();
+                var url = await _crearPago.Ejecutar(compraId, dto,userId);
 
                 return Ok(new
                 {
@@ -46,9 +77,17 @@ namespace projectAPI.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Forbid();
+            }
             catch (EntityNotFound ex)
             {
                 return NotFound(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
@@ -56,18 +95,6 @@ namespace projectAPI.Controllers
             }
         }
     
-      [HttpPost("webhook")]
-        public async Task<IActionResult> Webhook([FromBody] dynamic notification)
-        {
-            var paymentId = notification?.data?.id;
-
-            if (paymentId == null)
-                return BadRequest();
-
-            // luego consultarías el pago a MercadoPago
-            // y ejecutarías ConfirmarPago
-
-            return Ok();
-        }
+     
     }
 }

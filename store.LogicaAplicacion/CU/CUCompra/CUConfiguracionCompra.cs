@@ -26,6 +26,9 @@ namespace store.LogicaAplicacion.CU.CUCompra
         public async  Task<int> ConfiguraciónCompra(int compraid,  EnvioDTO dtoEnvio)
         {
             Compra c= await _repositorioCompras.FindByIdAsync(compraid);
+            if (c.EstadoCompra == Compra.Estado.Cancelada || c.EstadoCompra == Compra.Estado.Fallida)
+                throw new InvalidOperationException("La compra no admite configuración de envío");
+
             if (c==null)
                 throw new EntityNotFound("Compra", compraid);
            

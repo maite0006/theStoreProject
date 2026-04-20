@@ -1,4 +1,5 @@
 ﻿using store.DTOs.DTOs.Articulo;
+using store.DTOs.Pago;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,11 @@ namespace store.DTOs.DTOs.Compra
 {
     public class CompraDTO
     {
-        public int? CompraId { get; set; }
-        public List<ArticuloCarritoDTO> Articulos { get; set; } = new();
+        public int CompraId { get; set; }
+        public List<ArticuloCompraDTO> Articulos { get; set; } = new();
         public decimal Total { get; set; }
         public string EstadoCompra { get; set; }
-        public List<PagoDTO>? Pagos { get; set; }
+        public List<PagoDTO> Pagos { get; set; }
         public EnvioDTO? Envio { get; set; }
 
     }

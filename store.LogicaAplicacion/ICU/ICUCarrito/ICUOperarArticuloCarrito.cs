@@ -9,6 +9,6 @@ namespace store.LogicaAplicacion.ICU.ICUCarrito
 {
     public interface ICUOperarArticuloCarrito
     {
-        Task<bool> Ejecutar(ArtDTO art);
+        Task<bool> Ejecutar(AddedArtDTO art, int Uid);
     }
 }

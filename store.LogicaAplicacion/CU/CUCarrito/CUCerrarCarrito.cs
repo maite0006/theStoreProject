@@ -15,23 +15,23 @@ using System.Threading.Tasks;
 
 namespace store.LogicaAplicacion.CU.CUCarrito
 {
-    public class CUCerrarPrecompra : ICUCerrarPrecompra
+    public class CUCerrarCarrito : ICUCerrarPrecompra
     {
         private readonly IRepositorioPrecompras _repositorioPrecompras;
         private readonly IRepositorioCompras _repositorioCompras;
         
-        public  CUCerrarPrecompra(IRepositorioPrecompras repositorio, IRepositorioCompras repositorioCompras)
+        public  CUCerrarCarrito(IRepositorioPrecompras repositorio, IRepositorioCompras repositorioCompras)
         {
             _repositorioPrecompras = repositorio;
             _repositorioCompras=repositorioCompras;
             
         }
-        public async Task<CompraDTO> CerrarPrecompra(int precompraId)
+        public async Task<CompraDTO> CerrarPrecompra(int userID)
         {
             
-            Precompra precompra = await _repositorioPrecompras.FindByIdAsync(precompraId);
+            Precompra precompra = await _repositorioPrecompras.FindByCliente(userID);
             if (precompra == null || precompra.Articulos.Count == 0)
-                throw new EntityNotFound("Precompra", precompraId);
+                throw new EntityNotFound("Precompra cliente", userID);
 
             var articulosValidos = precompra.Articulos.
                 Where(a =>  a.Producto != null && a.EvaluarDisponibilidad(a.Producto.Stock, a.Producto.Activo))
@@ -49,13 +49,17 @@ namespace store.LogicaAplicacion.CU.CUCarrito
 
             foreach (var articulo in articulosValidos)
             {
-                precompra.Articulos.Remove(articulo);
-                articulo.Precompra = null;
-                compra.Articulos.Add(articulo);
+                var articuloCompra = new ArticuloCompra
+                {
+                    ProductoId = articulo.ProductoId, 
+                    Cantidad = articulo.Cantidad,
+                    PrecioUnitario = articulo.PrecioUnitario
+                };
+                compra.Articulos.Add(articuloCompra);
             }
 
             await _repositorioCompras.AddAsync(compra);
-            precompra.Articulos.Clear();
+            precompra.Vaciar();
             await _repositorioPrecompras.UpdateAsync(precompra);
 
             return CompraMapper.FromCompra(compra);

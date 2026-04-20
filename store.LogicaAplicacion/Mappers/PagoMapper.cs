@@ -1,4 +1,4 @@
-﻿using store.DTOs.DTOs.Compra;
+﻿using store.DTOs.Pago;
 using store.LogicaNegocio.Entidades;
 using System;
 using System.Collections.Generic;
@@ -10,30 +10,36 @@ namespace store.LogicaAplicacion.Mappers
 {
     public static class PagoMapper
     {
-        public static Pago FromDTO(PagoDTO dto)
+        public static Pago FromDTO(CrearPagoDTO dto)
         {
-            Pago pago = new Pago();
+            if (string.IsNullOrWhiteSpace(dto.Metodo))
+                throw new ArgumentException("El método de pago es obligatorio.");
 
-            pago.Monto = dto.Monto;
-            if(pago.Metodo.ToString().ToLower()== "transferencia ")
-                dto.Metodo="transferencia";
-            if(pago.Metodo.ToString().ToLower()== "mercadopago")
-                dto.Metodo="mercadopago";
-            return pago;
+            string metodoNormalizado = dto.Metodo.Trim().ToLower();
+
+            MetodoPago metodo = metodoNormalizado switch
+            {
+                "transferencia" => MetodoPago.Transferencia,
+                "mercadopago" => MetodoPago.MercadoPago,
+                _ => throw new ArgumentException("Método de pago inválido.")
+            };
+
+            return new Pago
+            {
+                Metodo = metodo
+            };
         }
 
         public static PagoDTO FromPago(Pago pago)
         {
-            PagoDTO dto = new PagoDTO();
-
-            dto.Monto = pago.Monto;
-            if(dto.Metodo.ToLower() == "transferencia ")
-                pago.Metodo = MetodoPago.Transferencia;
-            if(dto.Metodo.ToLower() == "mercadopago") 
-                pago.Metodo = MetodoPago.MercadoPago;
-
-            return dto;
+            return new PagoDTO
+            {
+                Monto = pago.Monto,
+                Metodo = pago.Metodo.ToString(),
+                Estado = pago.Estado.ToString(),
+                FechaPago = pago.FechaPago
+            };
         }
-    
+
     }
 }

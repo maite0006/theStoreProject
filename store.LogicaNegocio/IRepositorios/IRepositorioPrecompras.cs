@@ -14,9 +14,9 @@ namespace store.LogicaNegocio.IRepositorios
         //Async methods
         Task<Precompra> FindByCliente(int clienteid);
 
-        Task AddArticulo(Articulo art);
+        Task AddArticulo(ArticuloCarrito art);
 
         Task<bool> RemoveArticulo(int articuloId);
-        Task<ICollection<Articulo>> GetArticulos(int clienteid);
+        Task<ICollection<ArticuloCarrito>> GetArticulos(int clienteid);
     }
 }

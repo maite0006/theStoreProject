@@ -26,24 +26,23 @@ namespace store.LogicaAplicacion.CU.CUCarrito
             _repositorioPrecompras = repositorioPrecompras;
             _context = store;
         }
-        public async Task<bool> Ejecutar(ArtDTO dto)
+        public async Task<bool> Ejecutar(AddedArtDTO dto, int Uid)
         {
-            Producto producto = await _context.Productos.FirstOrDefaultAsync(p => p.Id == dto.productoId);
+            Producto producto = await _context.Productos.FirstOrDefaultAsync(p => p.Id == dto.ProductoId);
+
             if (producto == null)
-                throw new EntityNotFound("Producto", dto.productoId);
+                throw new EntityNotFound("Producto", dto.ProductoId);
 
             if (!producto.Activo)
                 throw new ErrorFlujoArticulo("El producto no está disponible para la venta.");
 
-            if (dto.cantidad > producto.Stock)
+            if (dto.Cantidad > producto.Stock)
                 throw new CantidadArticuloInvalida("No hay stock suficiente para la cantidad solicitada.");
             //Articulo articulo= Mappers.ArticuloMapper.FromDTO(dto);
-            int precompraId = dto.precompraId ?? throw new ArgumentException("El ArtDTO debe tener un precompraId válido para agregar al carrito.");
-            Precompra carrito = await _repositorioPrecompras.FindByIdAsync(precompraId);
-
+            Precompra carrito = await _repositorioPrecompras.FindByCliente(Uid);
             carrito.ActualizarCantidadArticulo(
                  producto,
-                 dto.cantidad      
+                 dto.Cantidad      
              );
             await _context.SaveChangesAsync();
             return true;

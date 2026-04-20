@@ -18,7 +18,8 @@ namespace store.LogicaDatos
         public DbSet<Compra> Compras { get; set; }
         public DbSet<Precompra> Precompras { get; set; }
         public DbSet<Reseña> Reseñas { get; set; }
-        public DbSet<Articulo> Articulos { get; set; }
+        public DbSet<ArticuloCarrito> ArticulosCarrito { get; set; }
+        public DbSet<ArticuloCompra> ArticulosCompra { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<ImgProd> ImgProds { get; set; }
         public DbSet<Pago> Pagos { get; set; }
@@ -83,14 +84,14 @@ namespace store.LogicaDatos
                 .HasForeignKey(r => r.ProductoId)
                 .OnDelete(DeleteBehavior.Cascade); 
 
-            // Configuración para las relaciones uno a muchos entre Compra y Articulo   
+            // Configuración para las relaciones uno a muchos entre Compra y ArticuloCompra 
             modelBuilder.Entity<Compra>()
                 .HasMany(c => c.Articulos)
                 .WithOne(a => a.Compra)
                 .HasForeignKey(a => a.CompraId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Configuración para las relaciones uno a muchos entre Precompra y Articulo
+            // Configuración para las relaciones uno a muchos entre Precompra y ArticuloCarrito
             modelBuilder.Entity<Precompra>()
                 .HasMany(p => p.Articulos)
                 .WithOne(a => a.Precompra)
@@ -129,7 +130,8 @@ namespace store.LogicaDatos
             modelBuilder.Entity<Compra>().HasKey(c => c.Id);
             modelBuilder.Entity<Precompra>().HasKey(p => p.Id);
             modelBuilder.Entity<Reseña>().HasKey(r => new { r.ClienteId, r.ProductoId });
-            modelBuilder.Entity<Articulo>().HasKey(a => a.Id);
+            modelBuilder.Entity<ArticuloCarrito>().HasKey(a => a.Id);
+            modelBuilder.Entity<ArticuloCompra>().HasKey(a => a.Id);
             modelBuilder.Entity<Category>().HasKey(c => c.Id);
 
             //conf escalas en decimales
@@ -141,14 +143,15 @@ namespace store.LogicaDatos
                 .Property(c => c.Total)
                 .HasColumnType("decimal(18,2)");
 
-            modelBuilder.Entity<Articulo>()
+            modelBuilder.Entity<ArticuloCarrito>()
                 .Property(a => a.PrecioUnitario)
                 .HasColumnType("decimal(18,2)");
 
-            modelBuilder.Entity<Precompra>()
-                .Property(pc => pc.Total)
+            modelBuilder.Entity<ArticuloCompra>()
+                .Property(a => a.PrecioUnitario)
                 .HasColumnType("decimal(18,2)");
 
+           
         }
     }
 }

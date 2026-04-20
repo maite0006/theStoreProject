@@ -1,4 +1,4 @@
-﻿using store.DTOs.DTOs.Compra;
+﻿using store.DTOs.Pago;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +9,6 @@ namespace store.LogicaAplicacion.ICU.ICUCompra.ICUPagos
 {
     public interface ICUCrearPago
     {
-        Task<String> Ejecutar(int compraId, PagoDTO pago);
+        Task<String> Ejecutar(int compraId, CrearPagoDTO pago, int userId);
     }
 }

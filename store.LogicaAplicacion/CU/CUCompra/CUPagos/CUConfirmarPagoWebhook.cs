@@ -13,36 +13,38 @@ using System.Threading.Tasks;
 
 namespace store.LogicaAplicacion.CU.CUCompra.CUPagos
 {
-    public class CUConfirmarPago : ICUConfirmarPago
+    public class CUConfirmarPagoWebhook : ICUConfirmarPagoWebhook
     {
         private readonly IRepositorioCompras _repositorioCompras;
         private readonly IRepositorioPagos _repoPagos;
         private readonly eStoreDBContext _context;
-        public CUConfirmarPago(IRepositorioCompras repositorioCompras, eStoreDBContext context, IRepositorioPagos repoPagos)
+        public CUConfirmarPagoWebhook(IRepositorioCompras repositorioCompras, eStoreDBContext context, IRepositorioPagos repoPagos)
         {
             _repositorioCompras= repositorioCompras;
             _repoPagos = repoPagos;
             _context= context;
         }
-        public async Task ConfirmarPago(int pagoId)
-        {
-            Pago pago = await _repoPagos.FindByIdAsync(pagoId);
+      
 
+        public async Task ConfirmarPagoWH(int pagoId)
+        {
+            var pago = await _repoPagos.FindByIdAsync(pagoId);
             if (pago == null)
                 throw new EntityNotFound("Pago", pagoId);
 
+            if (pago.Estado == EstadoPago.Aprobado)
+                return; // idempotente
+
             pago.Confirmar();
 
-            Compra compra = await _repositorioCompras.FindByIdAsync(pago.CompraId);
+            var compra = await _repositorioCompras.FindByIdAsync(pago.CompraId);
+            if (compra == null)
+                throw new EntityNotFound("Compra", pago.CompraId);
 
-            compra.MarcarPagada();
+            if (compra.EstadoCompra != Compra.Estado.Pagada)
+                compra.MarcarPagada();
 
             await _context.SaveChangesAsync();
-        }
-
-        public  bool SimulacionMP(Pago p)
-        {
-            return p!= null;
         }
     }
 }

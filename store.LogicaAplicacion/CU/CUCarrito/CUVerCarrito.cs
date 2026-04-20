@@ -28,13 +28,12 @@ namespace store.LogicaAplicacion.CU.CUCarrito
 
             var carritoDto = new CarritoDTO
             {
-                 PrecompraId= precompra.Id,
                 Total =  precompra.CalcularTotal(),
             };
 
             foreach (var art in precompra.Articulos)
             {
-                ArticuloCarritoDTO dto= Mappers.ArticuloMapper.FromArticulo(art);
+                ArticuloCarritoDTO dto= Mappers.ArticuloCarritoMapper.FromEntity(art);
                 carritoDto.Articulos.Add(dto);
             }
 

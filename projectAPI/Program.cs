@@ -66,7 +66,7 @@ builder.Services.AddScoped<ICUAltaCategoria, CUAltaCategoria>();
 builder.Services.AddScoped<ICUBajaCategoria, CUBajaCategoria>();
 // Precompra/Carrito
 builder.Services.AddScoped<store.LogicaAplicacion.ICU.ICUCarrito.ICUOperarArticuloCarrito, CUOperarArticuloCarrito>();
-builder.Services.AddScoped<ICUCerrarPrecompra, CUCerrarPrecompra>();
+builder.Services.AddScoped<ICUCerrarPrecompra, CUCerrarCarrito>();
 builder.Services.AddScoped<ICUVerCarrito, CUVerCarrito>();
 builder.Services.AddScoped<ICUVaciarCarrito, CUVaciarCarrito>();
 //Compra
@@ -78,7 +78,8 @@ builder.Services.AddScoped<ICUHistorialGeneralCompras, CUHistorialGeneralCompras
 
 //Pago
 builder.Services.AddScoped<ICUCrearPago, CUCrearPago>();
-builder.Services.AddScoped<ICUConfirmarPago, CUConfirmarPago>();
+builder.Services.AddScoped<ICUConfirmarPagoWebhook, CUConfirmarPagoWebhook>();
+builder.Services.AddScoped<ICURechazarPagoWebHook, CURechazarPagoWebHook>();
 
 
 //Configuración de Mercado Pago

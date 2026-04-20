@@ -18,7 +18,7 @@ namespace store.LogicaAplicacion.Mappers
             ret.Total=compra.Total;
             ret.EstadoCompra=compra.EstadoCompra.ToString();
             foreach (var item in compra.Articulos) {
-                ArticuloCarritoDTO art = ArticuloMapper.FromArticulo(item);
+                ArticuloCompraDTO art = ArticuloCompraMapper.FromEntity(item);
                 ret.Articulos.Add(art);
             }
             if (compra.Pagos.Any())

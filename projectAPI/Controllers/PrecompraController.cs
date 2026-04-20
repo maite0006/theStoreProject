@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using store.DTOs.DTOs.Articulo;
 using store.DTOs.DTOs.Carrito;
 using store.DTOs.DTOs.Compra;
@@ -14,7 +15,7 @@ namespace projectAPI.Controllers
 {
     [ApiController]
     [Route("api/[Controller]")]
-    [Authorize]
+    [Authorize(Roles = "Cliente")]
     public class PrecompraController : Controller
     {
         private readonly ICUOperarArticuloCarrito _cuOperarArticuloCarrito;
@@ -29,16 +30,24 @@ namespace projectAPI.Controllers
             _cuVerCarrito = cuVerCarrito;
             _cuVaciarCarrito = cuVaciarCarrito;
         }
+        private int GetUserId()
+        {
+            var idS = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
+            if (string.IsNullOrEmpty(idS))
+                throw new UnauthorizedAccessException("Debe autenticarse.");
+
+            return Convert.ToInt32(idS);
+        }
         [HttpPost("Articulo")]
-        [Authorize(Roles = "Cliente")]
-        public async Task<IActionResult> OperarArticuloCarrito(ArtDTO art)
+        public async Task<IActionResult> OperarArticuloCarrito(AddedArtDTO art)
         {
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
+            var userId = GetUserId();
             try
             {
-                 await _cuOperarArticuloCarrito.Ejecutar(art);
+                 await _cuOperarArticuloCarrito.Ejecutar(art, userId);
 
                 return Ok("Operación realizada correctamente.");
                 
@@ -63,17 +72,9 @@ namespace projectAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> VerCarrito()
         {
-            
-
-            var idS = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            int id = Convert.ToInt32(idS);
-            if (id == null)
-            {
-                return Unauthorized("No se pudo obtener el ID del usuario autenticado.");
-            }
             try
             {
-
+                int id= GetUserId();
                 CarritoDTO carrito = await _cuVerCarrito.VerCarrito(id);
                 return Ok(carrito);
             }
@@ -90,15 +91,9 @@ namespace projectAPI.Controllers
         [HttpDelete("vaciar")]
         public async Task<IActionResult> VaciarCarrito()
         {
-            var idS = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            int id = Convert.ToInt32(idS);
-            if (id == null)
-            {
-                return Unauthorized("No se pudo obtener el ID del usuario autenticado.");
-            }
             try
             {
-
+                int id = GetUserId();
                 await _cuVaciarCarrito.Vaciar(id);
 
                 return Ok("Carrito vaciado correctamente");
@@ -125,7 +120,8 @@ namespace projectAPI.Controllers
                 return BadRequest("El id de precompra es invalido");
             try
             {
-                CompraDTO compra = await _cuCerrarPrecompra.CerrarPrecompra(precompraId);
+                int userId = GetUserId();
+                CompraDTO compra = await _cuCerrarPrecompra.CerrarPrecompra(userId);
                 return Ok(compra);
             }
             catch (EntityNotFound ex)

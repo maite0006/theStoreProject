@@ -1,5 +1,4 @@
-﻿using store.LogicaNegocio.Entidades;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace store.LogicaAplicacion.ICU.ICUCompra.ICUPagos
 {
-    public interface ICUConfirmarPago
+    public interface ICURechazarPagoWebHook
     {
-        Task ConfirmarPago(int pagoId);
-      
+        Task RechazarPagoWH(int pagoId);
     }
 }

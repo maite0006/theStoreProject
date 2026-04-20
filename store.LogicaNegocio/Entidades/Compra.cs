@@ -21,7 +21,7 @@ namespace store.LogicaNegocio.Entidades
             Fallida,
             Cancelada
         }
-        public ICollection<Articulo> Articulos { get; set; } = new List<Articulo>();
+        public ICollection<ArticuloCompra> Articulos { get; set; } = new List<ArticuloCompra>();
         public int ClienteId { get; set; }
         public Cliente Cliente { get; set; }
         public Envio Envio { get; set; }
@@ -32,6 +32,8 @@ namespace store.LogicaNegocio.Entidades
         {
             if (EstadoCompra == Estado.Pagada)
                 throw new InvalidOperationException("La compra ya está pagada");
+            if (EstadoCompra == Estado.Cancelada)
+                throw new InvalidOperationException("La compra está cancelada");
 
             EstadoCompra = Estado.Pagada;
         }

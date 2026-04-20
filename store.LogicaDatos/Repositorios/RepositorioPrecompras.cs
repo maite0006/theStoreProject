@@ -20,11 +20,11 @@ namespace store.LogicaDatos.Repositorios
 
         public async Task<int?> ExisteArticuloEnPrecompra(int productoId, int precompraId)
         {
-            var art=  await _context.Articulos.FirstOrDefaultAsync(a => a.ProductoId == productoId && a.PrecompraId == precompraId);
+            var art=  await _context.ArticulosCarrito.FirstOrDefaultAsync(a => a.ProductoId == productoId && a.PrecompraId == precompraId);
             return art?.Id;
             
         }
-        public async Task AddArticulo(Articulo art)
+        public async Task AddArticulo(ArticuloCarrito art)
         {
             var precompra = await _context.Precompras
             .Include(pc => pc.Articulos)
@@ -33,7 +33,7 @@ namespace store.LogicaDatos.Repositorios
             if (precompra != null)
             {
                 precompra.Articulos.Add(art); 
-                await _context.Articulos.AddAsync(art); 
+                await _context.ArticulosCarrito.AddAsync(art); 
                 await _context.SaveChangesAsync();
             }
         }
@@ -70,20 +70,20 @@ namespace store.LogicaDatos.Repositorios
         }
         public async Task<bool> RemoveArticulo(int articuloId)
         {
-            var art = await _context.Articulos.FindAsync(articuloId);
+            var art = await _context.ArticulosCarrito.FindAsync(articuloId);
             if (art == null) return false;
 
-            _context.Articulos.Remove(art);
+            _context.ArticulosCarrito.Remove(art);
             await _context.SaveChangesAsync();
             return true;
         }
 
         public async Task<bool> RemoveAsync(int id)
         {
-            var art = await _context.Articulos.FindAsync(id);
+            var art = await _context.ArticulosCarrito.FindAsync(id);
             if (art == null) return false;
 
-            _context.Articulos.Remove(art);
+            _context.ArticulosCarrito.Remove(art);
             await _context.SaveChangesAsync();
             return true;
         }
@@ -92,14 +92,14 @@ namespace store.LogicaDatos.Repositorios
         {
             return false;
         }
-        public async Task<ICollection<Articulo>> GetArticulos(int clienteid)
+        public async Task<ICollection<ArticuloCarrito>> GetArticulos(int clienteid)
         {
             var precompra = await _context.Precompras
             .Include(pc => pc.Articulos)
             .ThenInclude(a => a.Producto)
             .FirstOrDefaultAsync(pc => pc.Cliente.Id == clienteid);
 
-            return precompra?.Articulos ?? new List<Articulo>();
+            return precompra?.Articulos ?? new List<ArticuloCarrito>();
 
         }
 
